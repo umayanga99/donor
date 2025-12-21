@@ -4,8 +4,10 @@ All mechanisms ON: Gossip (Reputation) + Forgiveness + Regret
 """
 import os
 from donor_game import DonorGameBase
+from dotenv import load_dotenv
 
 def main():
+    load_dotenv()
     api_key = os.getenv("ANTHROPIC_API_KEY")
     if not api_key:
         raise ValueError("ANTHROPIC_API_KEY environment variable not set")
@@ -20,7 +22,7 @@ def main():
         enable_forgiveness=True  # Forgiveness mechanism
     )
 
-    game.run_simulation(num_generations=3, num_agents=12)
+    game.run_simulation(num_generations=5, num_agents=6)
     print("\nAll mechanisms simulation complete!")
 
 if __name__ == "__main__":

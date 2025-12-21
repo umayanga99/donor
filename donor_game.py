@@ -130,7 +130,7 @@ class DonorGameBase:
         self.enable_regret = enable_regret
         self.enable_gossip = enable_gossip
         self.enable_forgiveness = enable_forgiveness
-        self.enable_reputation_bias = True  # Always enabled
+        self.enable_reputation_bias = True
 
         # Game parameters
         self.cooperation_gain = 2
@@ -222,17 +222,17 @@ class DonorGameBase:
         out_regret = min(1.0, max(0.0, out_regret))
 
         # ---- WEIGHTING --------------------------------------------
-        # You can tune these two
         alpha = self.regret_outcome_weight  # e.g. 0.7
         beta = self.regret_opportunity_weight  # e.g. 0.3
 
         combined = alpha * out_regret + beta * opp_regret
 
         # ---- OPTIMISTIC MODIFIER ----------------------------------
-        # optimism: reduces negative emotion if agent sees future potential
+        # optimism: reduces negative emotion if the agent sees future potential
         # optimism value in [0,1], 0 pessimistic, 1 very optimistic
         optimism = agent.optimism
         optimism_factor = 1.0 - 0.5 * optimism  # up to −50% reduction
+        # alpha * out_regret + beta * opp_regret * optimism_factor
 
         regret = combined * optimism_factor
         regret = min(1.0, max(0.0, regret))
@@ -273,6 +273,10 @@ class DonorGameBase:
             regret_text += f"Round {regret.round_number}: donated {regret.decision:.1f}, regret level {regret.regret_level:.2f}. "
         return regret_text + "\n"
 
+    # You have regrets about past decisions:
+    #  donated 0.0 regret level 0.9
+    # round 2 donated 9.0 regret 0.7
+
     # === MECHANISM 2: GOSSIP ===
     def generate_gossip(self, observer: Agent, observed: Agent, interaction_quality: float,
                         round_number: int) -> Optional[GossipMessage]:
@@ -298,32 +302,6 @@ class DonorGameBase:
             source=observer.name
         )
 
-    def spread_gossip(self, agents: List[Agent]):
-        """Spread gossip among agents with reliability decay (only if enabled)"""
-        if not self.enable_gossip:
-            return
-
-        for agent in agents:
-            if not agent.gossip_to_share:
-                continue
-
-            # share with 2-3 random others
-            num_to_share = random.randint(2, min(3, len(agents) - 1))
-            recipients = random.sample([a for a in agents if a != agent], num_to_share)
-
-            for gossip in agent.gossip_to_share:
-                for recipient in recipients:
-                    decay = 0.9
-                    new_gossip = GossipMessage(
-                        about_agent=gossip.about_agent,
-                        sentiment=gossip.sentiment,
-                        reliability=gossip.reliability * decay,
-                        round_received=gossip.round_received,
-                        source=agent.name
-                    )
-                    recipient.gossip_received.append(new_gossip)
-
-            agent.gossip_to_share.clear()
 
     def absorb_gossip(self, agent: Agent, current_round: int):
         """Absorb gossip into reputation beliefs with time decay"""
@@ -415,8 +393,8 @@ class DonorGameBase:
         if not was_positive_interaction:
             # Severity scales offense impact
             record.offense_count += severity
-            # Forgiveness decreases more when level is high (trust shock)
-            drop = severity * (0.3 + 0.7 * record.forgiveness_level)
+            # Forgiveness decreases very gradually - max drop is 0.15 at full trust
+            drop = severity * (0.05 + 0.1 * record.forgiveness_level)
             record.forgiveness_level = max(0.0, record.forgiveness_level - drop)
         else:
             # Forgiveness builds slowly from low levels, faster from medium levels
@@ -488,6 +466,10 @@ class DonorGameBase:
         if self.enable_gossip:
             reputation_modifier = 1 + self.reputation_bias_strength * (recipient.reputation - 0.5)
             biased_response *= reputation_modifier
+            # 10
+            # 1 + 0.4 * (0-0.5)
+            # 0.5  =N
+            #0.4 = 1 + 0.4 (-0.1)=0.8
 
         # Bias based on forgiveness level toward recipient (only if forgiveness is enabled)
         if self.enable_forgiveness and recipient.name in donor.forgiveness_records:
@@ -699,14 +681,14 @@ class DonorGameBase:
         )
         donor.regret_level = regret_level
 
-        was_positive = percentage_donated > 0.3
+        was_positive = percentage_donated > 0.2  # Lowered from 0.3 to 0.2
         severity = 1.0 if not was_positive else 0.5
         self.update_forgiveness(donor, recipient.name, was_positive, round_index + 1, severity)
         self.update_forgiveness(recipient, donor.name, was_positive, round_index + 1, severity)
 
-        # Track forgiveness given
-        if recipient.name in donor.forgiveness_records:
-            donor.forgiveness_given = donor.forgiveness_records[recipient.name].forgiveness_level
+        # Track forgiveness given (updated after update_forgiveness to ensure record exists)
+        donor.forgiveness_given = donor.forgiveness_records[recipient.name].forgiveness_level if recipient.name in donor.forgiveness_records else 1.0
+        recipient.forgiveness_given = recipient.forgiveness_records[donor.name].forgiveness_level if donor.name in recipient.forgiveness_records else 1.0
 
         interaction_quality = percentage_donated
         gossip = self.generate_gossip(donor, recipient, interaction_quality, round_index + 1)
@@ -765,7 +747,7 @@ class DonorGameBase:
             traces=recipient.traces,
             history=recipient.history,
             regret_level=0.0,
-            forgiveness_given=0.0,
+            forgiveness_given=recipient.forgiveness_given,
             gossip_influenced=False,
             reputation=recipient.reputation
         )

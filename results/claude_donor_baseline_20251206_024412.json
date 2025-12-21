@@ -1,0 +1,1897 @@
+{
+  "hyperparameters": {
+    "num_generations": 3,
+    "num_agents": 6,
+    "initial_endowment": 10,
+    "cooperation_gain": 2,
+    "model": "claude-opus-4-5-20251101",
+    "enable_regret": false,
+    "enable_gossip": false,
+    "enable_forgiveness": false,
+    "enable_reputation_bias": true,
+    "mechanisms": "baseline"
+  },
+  "agents_data": [
+    {
+      "agent_name": "1_1",
+      "round_number": 1,
+      "game_number": 1,
+      "paired_with": "1_5",
+      "current_generation": 1,
+      "resources": 3.0,
+      "donated": 7.0,
+      "received": 0,
+      "strategy": "My strategy will beto start with a generous donation (around 7-8 units) to signal cooperation, then adjust my subsequent donations to approximately match my partner's recent giving behavior\u2014increasing if they're generous and decreasing if they're stingy\u2014to encourage mutual cooperation while protecting against exploitation.",
+      "strategy_justification": "I need to think through this donation game carefully.\n\n**Game Analysis:**\n- I start with 10 units each round\n- Any amount I donate gets multiplied by 2x before reaching my partner\n- My partner faces the same situation\n- Goal: maximize my resources\n\n**Key Considerations:**\n1. If both players donate fully (10 units), each receives 20 units from the other \u2192 net 20 units each\n2. If neither donates, each keeps 10 units \u2192 net 10 units each\n3. If I donate 10 and partner donates 0, I get 0 and partner gets 20+10=30\n4. If I donate 0 and partner donates 10, I get 10+20=30 and partner gets 0\n\n**Strategic Thinking:**\n- This is essentially a repeated Prisoner's Dilemma with a 2x multiplier\n- Cooperation (mutual high donations) yields the best collective outcome\n- Since I can observe my partner's recent behavior, I can use a reciprocal strategy\n- Starting cooperatively signals willingness to cooperate\n- Matching their behavior (or slightly above) encourages continued cooperation\n- Punishing defection prevents exploitation\n\n**Optimal Approach:**\nA Tit-for-Tat variant seems best: start generously to establish cooperation, then mirror what my partner does. If they cooperate, I cooperate. If they defect, I reduce my donation to protect myself but leave room for them to return to cooperation.",
+      "is_donor": true,
+      "traces": [
+        [
+          "1_1 had no previous interactions."
+        ],
+        [
+          "1_5 had no previous interactions.",
+          "In round 1, 1_1 donated 70.0% to 1_5."
+        ]
+      ],
+      "history": [
+        "Round 1: Donated 7.0 to 1_5"
+      ],
+      "justification": "Looking at this situation, I'm starting Round 1 with a new partner (1_5) who has no previous interaction history for me to evaluate.\n\nAccording to my strategy, I should start with a generous donation (around 7-8 units) to signal cooperation and establish a positive dynamic. This opening move demonstrates good faith and can encourage reciprocity.\n\nSince there's no prior behavior to react to, this is the perfect opportunity to set a cooperative tone. A generous first move of 7 units shows I'm willing to cooperate while still retaining some resources for protection.\n\nThe donation will be multiplied by 2x, so if I give 7 units, my partner receives 14 units. This creates value and hopefully encourages them to reciprocate generously.",
+      "regret_level": 0.0,
+      "forgiveness_given": 0.0,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "1_5",
+      "round_number": 1,
+      "game_number": 1,
+      "paired_with": "1_1",
+      "current_generation": 1,
+      "resources": 24.0,
+      "donated": 0,
+      "received": 14.0,
+      "strategy": "My strategy will beto start by donating a high amount (around 7-8 units) to signal cooperation, then adjust my donations to match my partner's recent giving behavior - increasing if they're generous and decreasing if they're stingy.",
+      "strategy_justification": "I need to think through this donation game carefully.\n\n**Game Analysis:**\n- I start with 10 units each round\n- Any amount I donate gets multiplied by 2x for my partner\n- My partner faces the same situation\n- Goal is to maximize my total resources\n\n**Key Considerations:**\n1. If both players donate everything (10 units), each receives 20 units from their partner, ending with 20 units each - a net gain of 10.\n2. If I donate 0 and my partner donates 10, I end with 10 + 20 = 30, while they end with 0.\n3. If both donate 0, we each keep our 10 units.\n4. This is essentially an iterated Prisoner's Dilemma structure.\n\n**Strategic Thinking:**\n- Since this is multi-round and I can observe my partner's recent behavior, I can use conditional cooperation\n- A tit-for-tat style approach tends to work well: start cooperatively, then mirror what my partner does\n- This rewards cooperative partners and protects against exploitative ones\n- Starting with cooperation signals willingness to cooperate and can establish a mutually beneficial pattern\n\n**Optimal Approach:**\n- Begin by donating generously to signal cooperation\n- Observe partner's behavior and reciprocate accordingly\n- If they cooperate, continue cooperating; if they defect, reduce donations to protect myself",
+      "is_donor": false,
+      "traces": [
+        [
+          "1_5 had no previous interactions."
+        ]
+      ],
+      "history": [
+        "Round 1: Received 14.0 from 1_1"
+      ],
+      "justification": "",
+      "regret_level": 0.0,
+      "forgiveness_given": 0.0,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "1_2",
+      "round_number": 1,
+      "game_number": 1,
+      "paired_with": "1_4",
+      "current_generation": 1,
+      "resources": 5.0,
+      "donated": 5.0,
+      "received": 0,
+      "strategy": "My strategy will beto start with a generous donation to signal cooperation, then mirror my partner's recent donation levels\u2014matching their generosity when they give and reducing my contributions if they withhold\u2014to build mutual trust while protecting myself from exploitation.",
+      "strategy_justification": "I need to think through this donation game strategically.\n\n**Game Analysis:**\n- I start with 10 units each round\n- Any amount I donate is doubled for my partner\n- Any amount my partner donates is doubled for me\n- The \"baseline\" mechanism means no special rules or punishments\n\n**Key Considerations:**\n1. If both players donate fully (10 units), each receives 20 units from the other = 20 units total\n2. If I donate 0 and my partner donates 10, I get 10 + 20 = 30 units (best individual outcome)\n3. If both donate 0, each keeps 10 units\n4. This is essentially an iterated Prisoner's Dilemma structure\n\n**Strategic Approach:**\nSince this is multi-round with access to partner's recent behavior, I should:\n- Start cooperatively to establish trust and signal willingness to cooperate\n- Reciprocate my partner's behavior to encourage continued cooperation\n- If they defect, reduce donations to avoid being exploited\n- A tit-for-tat style approach tends to perform well in repeated games\n\nThis encourages mutual high donations (best collective outcome: 20 each) while protecting against exploitation.",
+      "is_donor": true,
+      "traces": [
+        [
+          "1_2 had no previous interactions."
+        ],
+        [
+          "1_4 had no previous interactions.",
+          "In round 1, 1_2 donated 50.0% to 1_4."
+        ]
+      ],
+      "history": [
+        "Round 1: Donated 5.0 to 1_4"
+      ],
+      "justification": "I'm starting this game with a new partner who has no history yet. According to my strategy, I should begin with a generous donation to signal cooperation and establish a foundation for mutual trust.\n\nA generous opening move shows good faith and invites reciprocity. Since we both start with 10 units, giving around 4-5 units would be a meaningful signal of cooperation without being recklessly generous. This leaves me with enough resources to adjust based on how my partner responds in future rounds.\n\nI'll go with 5 units - exactly half my endowment. This is a clear cooperative signal that demonstrates I'm willing to share fairly, while also leaving room to increase or decrease based on their behavior.",
+      "regret_level": 0.0,
+      "forgiveness_given": 0.0,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "1_4",
+      "round_number": 1,
+      "game_number": 1,
+      "paired_with": "1_2",
+      "current_generation": 1,
+      "resources": 20.0,
+      "donated": 0,
+      "received": 10.0,
+      "strategy": "My strategy will beto start by donating generously (around 5-7 units) to signal cooperation, then adjust my donations based on my partner's recent behavior\u2014matching their generosity level to reward cooperation and discourage exploitation.",
+      "strategy_justification": "I need to think through this donation game strategically.\n\n**Key elements:**\n- Initial endowment: 10 units per round\n- Donations are multiplied by 2x (so 1 unit donated becomes 2 units for recipient)\n- This is a multi-round game\n- I can observe my partner's recent behavior\n- Goal: maximize my resources\n\n**Analysis:**\n\n1. **Mutual cooperation is efficient**: If both players donate fully, each gives 10 units, which becomes 20 units for the partner. Both end with 20 units instead of 10. This doubles total resources.\n\n2. **Defection temptation**: If I keep everything while my partner donates, I get 10 + 20 = 30 units. But if both defect, we each only get 10.\n\n3. **Multi-round dynamics**: Since this is repeated, I can use strategies like tit-for-tat or reciprocity to encourage cooperation. If I punish defection by reducing donations, rational partners should learn to cooperate.\n\n4. **Observing partner behavior**: I should respond to their recent actions - reward cooperation with cooperation, and reduce donations if they defect.\n\n5. **Starting strategy**: Beginning with cooperation (or moderate generosity) signals willingness to cooperate and tests the partner's intentions.\n\n**Optimal approach**: Start cooperatively to establish trust, then mirror my partner's behavior. If they cooperate, continue cooperating. If they defect, reduce my donations proportionally to discourage exploitation. This balances maximizing joint gains while protecting against exploitation.",
+      "is_donor": false,
+      "traces": [
+        [
+          "1_4 had no previous interactions."
+        ]
+      ],
+      "history": [
+        "Round 1: Received 10.0 from 1_2"
+      ],
+      "justification": "",
+      "regret_level": 0.0,
+      "forgiveness_given": 0.0,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "1_6",
+      "round_number": 1,
+      "game_number": 1,
+      "paired_with": "1_3",
+      "current_generation": 1,
+      "resources": 3.0,
+      "donated": 7.0,
+      "received": 0,
+      "strategy": "My strategy will beto start with a generous donation of around 7-8 units to signal cooperation, then adjust my future donations to approximately match what my partner gave in previous rounds, rewarding generosity with generosity and reducing my contributions if they contribute little.",
+      "strategy_justification": "I need to think through this donation game carefully.\n\n**Game Analysis:**\n- I start with 10 units each round\n- Any amount I donate gets multiplied by 2x for my partner\n- My partner faces the same situation\n- Goal is to maximize my resources\n\n**Key Considerations:**\n1. If both players donate everything (10 units), each receives 20 units from their partner \u2192 net 20 units each\n2. If neither donates anything, each keeps 10 units \u2192 net 10 units each\n3. If I donate 10 and partner donates 0, I get 0 and they get 30\n4. The socially optimal outcome is mutual full donation, but I risk exploitation\n\n**Strategic Thinking:**\n- This is essentially an iterated Prisoner's Dilemma structure\n- Since I can observe my partner's recent behavior, I can adapt\n- A cooperative approach that responds to defection tends to work well\n- Starting cooperatively signals good faith and can establish mutual benefit\n- I should be willing to reduce donations if my partner isn't reciprocating\n\n**Best Approach:**\n- Start with a generous donation to signal cooperation\n- Mirror my partner's behavior (reciprocity) - if they donate generously, I continue; if they exploit, I reduce\n- This \"tit-for-tat\" style approach encourages cooperation while protecting against exploitation",
+      "is_donor": true,
+      "traces": [
+        [
+          "1_6 had no previous interactions."
+        ],
+        [
+          "1_3 had no previous interactions.",
+          "In round 1, 1_6 donated 70.0% to 1_3."
+        ]
+      ],
+      "history": [
+        "Round 1: Donated 7.0 to 1_3"
+      ],
+      "justification": "I'm starting the first round with no prior information about my partner 1_3. According to my strategy, I should begin with a generous donation of around 7-8 units to signal cooperation and establish a positive tone for potential future interactions.\n\nStarting with generosity makes sense because:\n1. It signals that I'm willing to cooperate\n2. The 2x multiplier means my partner receives double what I give\n3. If they reciprocate in future rounds, we can both benefit significantly\n4. It establishes trust and potentially encourages mutual cooperation\n\nI'll go with 7 units as my opening donation - generous enough to signal cooperation but leaving me with some resources.",
+      "regret_level": 0.0,
+      "forgiveness_given": 0.0,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "1_3",
+      "round_number": 1,
+      "game_number": 1,
+      "paired_with": "1_6",
+      "current_generation": 1,
+      "resources": 24.0,
+      "donated": 0,
+      "received": 14.0,
+      "strategy": "My strategy will beto start by donating a moderate-to-high amount (around 7-8 units) to signal cooperation, then adjust my donations to match my partner's previous donation level, rewarding generosity with generosity and reducing my giving if they defect.",
+      "strategy_justification": "I need to think through this donation game carefully.\n\n**Game Analysis:**\n- I start with 10 units each round\n- Any amount I donate gets multiplied by 2x for my partner\n- My partner faces the same situation\n- No special mechanisms are in play (baseline condition)\n- Goal: maximize my total resources across rounds\n\n**Key Considerations:**\n1. If both players donate fully (10 units), each receives 20 units from the other, ending with 20 units each\n2. If neither donates, both keep 10 units\n3. If I donate 10 and partner donates 0, I get 0 and they get 30\n4. The socially optimal outcome is mutual full cooperation (both donate everything)\n\n**Strategic Thinking:**\n- This is essentially an iterated prisoner's dilemma\n- Since it's multi-round, I can observe my partner's behavior and respond\n- A cooperative approach can build trust and lead to higher mutual payoffs\n- However, I need to protect myself from exploitation\n- Tit-for-tat or conditional cooperation strategies tend to work well in repeated games\n\n**Best Approach:**\n- Start cooperatively to signal willingness to cooperate\n- Mirror my partner's behavior to encourage cooperation and discourage defection\n- This creates incentives for mutual cooperation while protecting against exploitation",
+      "is_donor": false,
+      "traces": [
+        [
+          "1_3 had no previous interactions."
+        ]
+      ],
+      "history": [
+        "Round 1: Received 14.0 from 1_6"
+      ],
+      "justification": "",
+      "regret_level": 0.0,
+      "forgiveness_given": 0.0,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "1_3",
+      "round_number": 2,
+      "game_number": 1,
+      "paired_with": "1_1",
+      "current_generation": 1,
+      "resources": 10.0,
+      "donated": 14.0,
+      "received": 0,
+      "strategy": "My strategy will beto start by donating a moderate-to-high amount (around 7-8 units) to signal cooperation, then adjust my donations to match my partner's previous donation level, rewarding generosity with generosity and reducing my giving if they defect.",
+      "strategy_justification": "I need to think through this donation game carefully.\n\n**Game Analysis:**\n- I start with 10 units each round\n- Any amount I donate gets multiplied by 2x for my partner\n- My partner faces the same situation\n- No special mechanisms are in play (baseline condition)\n- Goal: maximize my total resources across rounds\n\n**Key Considerations:**\n1. If both players donate fully (10 units), each receives 20 units from the other, ending with 20 units each\n2. If neither donates, both keep 10 units\n3. If I donate 10 and partner donates 0, I get 0 and they get 30\n4. The socially optimal outcome is mutual full cooperation (both donate everything)\n\n**Strategic Thinking:**\n- This is essentially an iterated prisoner's dilemma\n- Since it's multi-round, I can observe my partner's behavior and respond\n- A cooperative approach can build trust and lead to higher mutual payoffs\n- However, I need to protect myself from exploitation\n- Tit-for-tat or conditional cooperation strategies tend to work well in repeated games\n\n**Best Approach:**\n- Start cooperatively to signal willingness to cooperate\n- Mirror my partner's behavior to encourage cooperation and discourage defection\n- This creates incentives for mutual cooperation while protecting against exploitation",
+      "is_donor": true,
+      "traces": [
+        [
+          "1_3 had no previous interactions."
+        ],
+        [
+          "1_5 had no previous interactions.",
+          "In round 1, 1_1 donated 70.0% to 1_5."
+        ],
+        [
+          "1_5 had no previous interactions.",
+          "In round 1, 1_1 donated 70.0% to 1_5.",
+          "In round 2, 1_3 donated 58.3% to 1_1."
+        ]
+      ],
+      "history": [
+        "Round 1: Received 14.0 from 1_6",
+        "Round 2: Donated 14.0 to 1_1"
+      ],
+      "justification": "Looking at my partner 1_1's recent behavior, they donated 70% (7 units out of 10) in round 1, which shows strong cooperative behavior. This aligns well with my tit-for-tat strategy of rewarding generosity with generosity.\n\nMy strategy says to match my partner's previous donation level. Since they donated 70% in their last round, I should reciprocate with a similar percentage to reward their cooperation.\n\nHowever, I need to consider the resource asymmetry - I have 24 units while they only have 3 units. Donating 70% of 24 would be 16.8 units, which seems excessive and might not be sustainable long-term.\n\nI'll interpret my strategy as matching their demonstrated cooperation level (70%) while being mindful of the game dynamics. Donating around 70% of my resources would be approximately 17 units, but that feels too aggressive. Instead, I'll donate a generous amount that signals continued cooperation - perhaps closer to 50-60% given the large resource difference, or about 12-14 units.\n\nGiven they showed strong cooperation at 70%, I want to reciprocate meaningfully to maintain the cooperative dynamic.",
+      "regret_level": 0.0,
+      "forgiveness_given": 0.0,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "1_1",
+      "round_number": 2,
+      "game_number": 1,
+      "paired_with": "1_3",
+      "current_generation": 1,
+      "resources": 31.0,
+      "donated": 0,
+      "received": 28.0,
+      "strategy": "My strategy will beto start with a generous donation (around 7-8 units) to signal cooperation, then adjust my subsequent donations to approximately match my partner's recent giving behavior\u2014increasing if they're generous and decreasing if they're stingy\u2014to encourage mutual cooperation while protecting against exploitation.",
+      "strategy_justification": "I need to think through this donation game carefully.\n\n**Game Analysis:**\n- I start with 10 units each round\n- Any amount I donate gets multiplied by 2x before reaching my partner\n- My partner faces the same situation\n- Goal: maximize my resources\n\n**Key Considerations:**\n1. If both players donate fully (10 units), each receives 20 units from the other \u2192 net 20 units each\n2. If neither donates, each keeps 10 units \u2192 net 10 units each\n3. If I donate 10 and partner donates 0, I get 0 and partner gets 20+10=30\n4. If I donate 0 and partner donates 10, I get 10+20=30 and partner gets 0\n\n**Strategic Thinking:**\n- This is essentially a repeated Prisoner's Dilemma with a 2x multiplier\n- Cooperation (mutual high donations) yields the best collective outcome\n- Since I can observe my partner's recent behavior, I can use a reciprocal strategy\n- Starting cooperatively signals willingness to cooperate\n- Matching their behavior (or slightly above) encourages continued cooperation\n- Punishing defection prevents exploitation\n\n**Optimal Approach:**\nA Tit-for-Tat variant seems best: start generously to establish cooperation, then mirror what my partner does. If they cooperate, I cooperate. If they defect, I reduce my donation to protect myself but leave room for them to return to cooperation.",
+      "is_donor": false,
+      "traces": [
+        [
+          "1_1 had no previous interactions."
+        ],
+        [
+          "1_5 had no previous interactions.",
+          "In round 1, 1_1 donated 70.0% to 1_5."
+        ]
+      ],
+      "history": [
+        "Round 1: Donated 7.0 to 1_5",
+        "Round 2: Received 28.0 from 1_3"
+      ],
+      "justification": "",
+      "regret_level": 0.0,
+      "forgiveness_given": 0.0,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "1_5",
+      "round_number": 2,
+      "game_number": 1,
+      "paired_with": "1_2",
+      "current_generation": 1,
+      "resources": 12.0,
+      "donated": 12.0,
+      "received": 0,
+      "strategy": "My strategy will beto start by donating a high amount (around 7-8 units) to signal cooperation, then adjust my donations to match my partner's recent giving behavior - increasing if they're generous and decreasing if they're stingy.",
+      "strategy_justification": "I need to think through this donation game carefully.\n\n**Game Analysis:**\n- I start with 10 units each round\n- Any amount I donate gets multiplied by 2x for my partner\n- My partner faces the same situation\n- Goal is to maximize my total resources\n\n**Key Considerations:**\n1. If both players donate everything (10 units), each receives 20 units from their partner, ending with 20 units each - a net gain of 10.\n2. If I donate 0 and my partner donates 10, I end with 10 + 20 = 30, while they end with 0.\n3. If both donate 0, we each keep our 10 units.\n4. This is essentially an iterated Prisoner's Dilemma structure.\n\n**Strategic Thinking:**\n- Since this is multi-round and I can observe my partner's recent behavior, I can use conditional cooperation\n- A tit-for-tat style approach tends to work well: start cooperatively, then mirror what my partner does\n- This rewards cooperative partners and protects against exploitative ones\n- Starting with cooperation signals willingness to cooperate and can establish a mutually beneficial pattern\n\n**Optimal Approach:**\n- Begin by donating generously to signal cooperation\n- Observe partner's behavior and reciprocate accordingly\n- If they cooperate, continue cooperating; if they defect, reduce donations to protect myself",
+      "is_donor": true,
+      "traces": [
+        [
+          "1_5 had no previous interactions."
+        ],
+        [
+          "1_4 had no previous interactions.",
+          "In round 1, 1_2 donated 50.0% to 1_4."
+        ],
+        [
+          "1_4 had no previous interactions.",
+          "In round 1, 1_2 donated 50.0% to 1_4.",
+          "In round 2, 1_5 donated 50.0% to 1_2."
+        ]
+      ],
+      "history": [
+        "Round 1: Received 14.0 from 1_1",
+        "Round 2: Donated 12.0 to 1_2"
+      ],
+      "justification": "Looking at my partner 1_2's recent behavior, they donated 50% of their resources (which would have been 5 out of 10 units) in round 1. This shows a moderate level of cooperation - not extremely generous but definitely not stingy either.\n\nFollowing my strategy, I started with a high donation in round 1 to signal cooperation. Now I should adjust based on my partner's behavior. Since 1_2 showed moderate cooperation at 50%, I should match that level rather than being overly generous or punishing them.\n\n50% of my current 24 units would be 12 units. However, I need to be thoughtful here - I have significantly more resources than my partner (24 vs 5), so giving 50% is a substantial absolute amount. \n\nI'll match their cooperative percentage while being mindful of the resource disparity. A 50% donation seems appropriate to reciprocate their cooperative behavior.",
+      "regret_level": 0.0,
+      "forgiveness_given": 0.0,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "1_2",
+      "round_number": 2,
+      "game_number": 1,
+      "paired_with": "1_5",
+      "current_generation": 1,
+      "resources": 29.0,
+      "donated": 0,
+      "received": 24.0,
+      "strategy": "My strategy will beto start with a generous donation to signal cooperation, then mirror my partner's recent donation levels\u2014matching their generosity when they give and reducing my contributions if they withhold\u2014to build mutual trust while protecting myself from exploitation.",
+      "strategy_justification": "I need to think through this donation game strategically.\n\n**Game Analysis:**\n- I start with 10 units each round\n- Any amount I donate is doubled for my partner\n- Any amount my partner donates is doubled for me\n- The \"baseline\" mechanism means no special rules or punishments\n\n**Key Considerations:**\n1. If both players donate fully (10 units), each receives 20 units from the other = 20 units total\n2. If I donate 0 and my partner donates 10, I get 10 + 20 = 30 units (best individual outcome)\n3. If both donate 0, each keeps 10 units\n4. This is essentially an iterated Prisoner's Dilemma structure\n\n**Strategic Approach:**\nSince this is multi-round with access to partner's recent behavior, I should:\n- Start cooperatively to establish trust and signal willingness to cooperate\n- Reciprocate my partner's behavior to encourage continued cooperation\n- If they defect, reduce donations to avoid being exploited\n- A tit-for-tat style approach tends to perform well in repeated games\n\nThis encourages mutual high donations (best collective outcome: 20 each) while protecting against exploitation.",
+      "is_donor": false,
+      "traces": [
+        [
+          "1_2 had no previous interactions."
+        ],
+        [
+          "1_4 had no previous interactions.",
+          "In round 1, 1_2 donated 50.0% to 1_4."
+        ]
+      ],
+      "history": [
+        "Round 1: Donated 5.0 to 1_4",
+        "Round 2: Received 24.0 from 1_5"
+      ],
+      "justification": "",
+      "regret_level": 0.0,
+      "forgiveness_given": 0.0,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "1_4",
+      "round_number": 2,
+      "game_number": 1,
+      "paired_with": "1_6",
+      "current_generation": 1,
+      "resources": 8.0,
+      "donated": 12.0,
+      "received": 0,
+      "strategy": "My strategy will beto start by donating generously (around 5-7 units) to signal cooperation, then adjust my donations based on my partner's recent behavior\u2014matching their generosity level to reward cooperation and discourage exploitation.",
+      "strategy_justification": "I need to think through this donation game strategically.\n\n**Key elements:**\n- Initial endowment: 10 units per round\n- Donations are multiplied by 2x (so 1 unit donated becomes 2 units for recipient)\n- This is a multi-round game\n- I can observe my partner's recent behavior\n- Goal: maximize my resources\n\n**Analysis:**\n\n1. **Mutual cooperation is efficient**: If both players donate fully, each gives 10 units, which becomes 20 units for the partner. Both end with 20 units instead of 10. This doubles total resources.\n\n2. **Defection temptation**: If I keep everything while my partner donates, I get 10 + 20 = 30 units. But if both defect, we each only get 10.\n\n3. **Multi-round dynamics**: Since this is repeated, I can use strategies like tit-for-tat or reciprocity to encourage cooperation. If I punish defection by reducing donations, rational partners should learn to cooperate.\n\n4. **Observing partner behavior**: I should respond to their recent actions - reward cooperation with cooperation, and reduce donations if they defect.\n\n5. **Starting strategy**: Beginning with cooperation (or moderate generosity) signals willingness to cooperate and tests the partner's intentions.\n\n**Optimal approach**: Start cooperatively to establish trust, then mirror my partner's behavior. If they cooperate, continue cooperating. If they defect, reduce my donations proportionally to discourage exploitation. This balances maximizing joint gains while protecting against exploitation.",
+      "is_donor": true,
+      "traces": [
+        [
+          "1_4 had no previous interactions."
+        ],
+        [
+          "1_3 had no previous interactions.",
+          "In round 1, 1_6 donated 70.0% to 1_3."
+        ],
+        [
+          "1_3 had no previous interactions.",
+          "In round 1, 1_6 donated 70.0% to 1_3.",
+          "In round 2, 1_4 donated 60.0% to 1_6."
+        ]
+      ],
+      "history": [
+        "Round 1: Received 10.0 from 1_2",
+        "Round 2: Donated 12.0 to 1_6"
+      ],
+      "justification": "I need to analyze this situation carefully.\n\nMy partner 1_6 has only 3.0 units while I have 20.0 units - there's a significant resource disparity. Looking at their recent behavior, they donated 70% (which would have been 7 out of 10 units) to their previous partner in round 1. This shows they're a generous cooperator.\n\nAccording to my strategy, I should match their generosity level to reward cooperation. They demonstrated 70% donation rate, which signals strong cooperative intent.\n\nHowever, I also need to consider:\n1. They have very few resources (3.0 units), so they can't reciprocate much regardless of intent\n2. My donation is multiplied by 2x, so giving generously creates value\n3. Rewarding their past cooperative behavior encourages continued cooperation in the game ecosystem\n\nGiven they showed 70% generosity, I should reciprocate at a similar level. 70% of my 20 units would be 14 units. This rewards their cooperative behavior and creates significant value (28 units for them).\n\nHowever, I need to balance generosity with self-preservation for future rounds. A 50-60% donation still signals strong cooperation while maintaining some resources.\n\nI'll donate 12 units (60%), which is generous and rewards their cooperative behavior while keeping 8 units for myself.",
+      "regret_level": 0.0,
+      "forgiveness_given": 0.0,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "1_6",
+      "round_number": 2,
+      "game_number": 1,
+      "paired_with": "1_4",
+      "current_generation": 1,
+      "resources": 27.0,
+      "donated": 0,
+      "received": 24.0,
+      "strategy": "My strategy will beto start with a generous donation of around 7-8 units to signal cooperation, then adjust my future donations to approximately match what my partner gave in previous rounds, rewarding generosity with generosity and reducing my contributions if they contribute little.",
+      "strategy_justification": "I need to think through this donation game carefully.\n\n**Game Analysis:**\n- I start with 10 units each round\n- Any amount I donate gets multiplied by 2x for my partner\n- My partner faces the same situation\n- Goal is to maximize my resources\n\n**Key Considerations:**\n1. If both players donate everything (10 units), each receives 20 units from their partner \u2192 net 20 units each\n2. If neither donates anything, each keeps 10 units \u2192 net 10 units each\n3. If I donate 10 and partner donates 0, I get 0 and they get 30\n4. The socially optimal outcome is mutual full donation, but I risk exploitation\n\n**Strategic Thinking:**\n- This is essentially an iterated Prisoner's Dilemma structure\n- Since I can observe my partner's recent behavior, I can adapt\n- A cooperative approach that responds to defection tends to work well\n- Starting cooperatively signals good faith and can establish mutual benefit\n- I should be willing to reduce donations if my partner isn't reciprocating\n\n**Best Approach:**\n- Start with a generous donation to signal cooperation\n- Mirror my partner's behavior (reciprocity) - if they donate generously, I continue; if they exploit, I reduce\n- This \"tit-for-tat\" style approach encourages cooperation while protecting against exploitation",
+      "is_donor": false,
+      "traces": [
+        [
+          "1_6 had no previous interactions."
+        ],
+        [
+          "1_3 had no previous interactions.",
+          "In round 1, 1_6 donated 70.0% to 1_3."
+        ]
+      ],
+      "history": [
+        "Round 1: Donated 7.0 to 1_3",
+        "Round 2: Received 24.0 from 1_4"
+      ],
+      "justification": "",
+      "regret_level": 0.0,
+      "forgiveness_given": 0.0,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "1_1",
+      "round_number": 3,
+      "game_number": 1,
+      "paired_with": "1_4",
+      "current_generation": 1,
+      "resources": 12.0,
+      "donated": 19.0,
+      "received": 0,
+      "strategy": "My strategy will beto start with a generous donation (around 7-8 units) to signal cooperation, then adjust my subsequent donations to approximately match my partner's recent giving behavior\u2014increasing if they're generous and decreasing if they're stingy\u2014to encourage mutual cooperation while protecting against exploitation.",
+      "strategy_justification": "I need to think through this donation game carefully.\n\n**Game Analysis:**\n- I start with 10 units each round\n- Any amount I donate gets multiplied by 2x before reaching my partner\n- My partner faces the same situation\n- Goal: maximize my resources\n\n**Key Considerations:**\n1. If both players donate fully (10 units), each receives 20 units from the other \u2192 net 20 units each\n2. If neither donates, each keeps 10 units \u2192 net 10 units each\n3. If I donate 10 and partner donates 0, I get 0 and partner gets 20+10=30\n4. If I donate 0 and partner donates 10, I get 10+20=30 and partner gets 0\n\n**Strategic Thinking:**\n- This is essentially a repeated Prisoner's Dilemma with a 2x multiplier\n- Cooperation (mutual high donations) yields the best collective outcome\n- Since I can observe my partner's recent behavior, I can use a reciprocal strategy\n- Starting cooperatively signals willingness to cooperate\n- Matching their behavior (or slightly above) encourages continued cooperation\n- Punishing defection prevents exploitation\n\n**Optimal Approach:**\nA Tit-for-Tat variant seems best: start generously to establish cooperation, then mirror what my partner does. If they cooperate, I cooperate. If they defect, I reduce my donation to protect myself but leave room for them to return to cooperation.",
+      "is_donor": true,
+      "traces": [
+        [
+          "1_1 had no previous interactions."
+        ],
+        [
+          "1_5 had no previous interactions.",
+          "In round 1, 1_1 donated 70.0% to 1_5."
+        ],
+        [
+          "1_3 had no previous interactions.",
+          "In round 1, 1_6 donated 70.0% to 1_3.",
+          "In round 2, 1_4 donated 60.0% to 1_6."
+        ],
+        [
+          "1_3 had no previous interactions.",
+          "In round 1, 1_6 donated 70.0% to 1_3.",
+          "In round 2, 1_4 donated 60.0% to 1_6.",
+          "In round 3, 1_1 donated 61.3% to 1_4."
+        ]
+      ],
+      "history": [
+        "Round 1: Donated 7.0 to 1_5",
+        "Round 2: Received 28.0 from 1_3",
+        "Round 3: Donated 19.0 to 1_4"
+      ],
+      "justification": "Looking at this situation, I need to analyze my partner's recent behavior to determine an appropriate donation.\n\nMy partner 1_4 donated 60% in their most recent round, which shows reasonably cooperative behavior. According to my strategy, I should match approximately their recent giving behavior to encourage mutual cooperation.\n\nI have 31.0 units currently. If I match their 60% donation level, that would be about 18.6 units. However, I should also consider that:\n1. 60% is a solid cooperative signal\n2. My partner currently has fewer resources (8.0 units) than me\n3. Matching their percentage shows reciprocity\n\nGiven my strategy of matching partner behavior, I'll donate around 60% of my current resources, which would be approximately 18-19 units. This maintains the cooperative dynamic they've established while not being exploitative.",
+      "regret_level": 0.0,
+      "forgiveness_given": 0.0,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "1_4",
+      "round_number": 3,
+      "game_number": 1,
+      "paired_with": "1_1",
+      "current_generation": 1,
+      "resources": 46.0,
+      "donated": 0,
+      "received": 38.0,
+      "strategy": "My strategy will beto start by donating generously (around 5-7 units) to signal cooperation, then adjust my donations based on my partner's recent behavior\u2014matching their generosity level to reward cooperation and discourage exploitation.",
+      "strategy_justification": "I need to think through this donation game strategically.\n\n**Key elements:**\n- Initial endowment: 10 units per round\n- Donations are multiplied by 2x (so 1 unit donated becomes 2 units for recipient)\n- This is a multi-round game\n- I can observe my partner's recent behavior\n- Goal: maximize my resources\n\n**Analysis:**\n\n1. **Mutual cooperation is efficient**: If both players donate fully, each gives 10 units, which becomes 20 units for the partner. Both end with 20 units instead of 10. This doubles total resources.\n\n2. **Defection temptation**: If I keep everything while my partner donates, I get 10 + 20 = 30 units. But if both defect, we each only get 10.\n\n3. **Multi-round dynamics**: Since this is repeated, I can use strategies like tit-for-tat or reciprocity to encourage cooperation. If I punish defection by reducing donations, rational partners should learn to cooperate.\n\n4. **Observing partner behavior**: I should respond to their recent actions - reward cooperation with cooperation, and reduce donations if they defect.\n\n5. **Starting strategy**: Beginning with cooperation (or moderate generosity) signals willingness to cooperate and tests the partner's intentions.\n\n**Optimal approach**: Start cooperatively to establish trust, then mirror my partner's behavior. If they cooperate, continue cooperating. If they defect, reduce my donations proportionally to discourage exploitation. This balances maximizing joint gains while protecting against exploitation.",
+      "is_donor": false,
+      "traces": [
+        [
+          "1_4 had no previous interactions."
+        ],
+        [
+          "1_3 had no previous interactions.",
+          "In round 1, 1_6 donated 70.0% to 1_3."
+        ],
+        [
+          "1_3 had no previous interactions.",
+          "In round 1, 1_6 donated 70.0% to 1_3.",
+          "In round 2, 1_4 donated 60.0% to 1_6."
+        ]
+      ],
+      "history": [
+        "Round 1: Received 10.0 from 1_2",
+        "Round 2: Donated 12.0 to 1_6",
+        "Round 3: Received 38.0 from 1_1"
+      ],
+      "justification": "",
+      "regret_level": 0.0,
+      "forgiveness_given": 0.0,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "1_2",
+      "round_number": 3,
+      "game_number": 1,
+      "paired_with": "1_3",
+      "current_generation": 1,
+      "resources": 12.0,
+      "donated": 17.0,
+      "received": 0,
+      "strategy": "My strategy will beto start with a generous donation to signal cooperation, then mirror my partner's recent donation levels\u2014matching their generosity when they give and reducing my contributions if they withhold\u2014to build mutual trust while protecting myself from exploitation.",
+      "strategy_justification": "I need to think through this donation game strategically.\n\n**Game Analysis:**\n- I start with 10 units each round\n- Any amount I donate is doubled for my partner\n- Any amount my partner donates is doubled for me\n- The \"baseline\" mechanism means no special rules or punishments\n\n**Key Considerations:**\n1. If both players donate fully (10 units), each receives 20 units from the other = 20 units total\n2. If I donate 0 and my partner donates 10, I get 10 + 20 = 30 units (best individual outcome)\n3. If both donate 0, each keeps 10 units\n4. This is essentially an iterated Prisoner's Dilemma structure\n\n**Strategic Approach:**\nSince this is multi-round with access to partner's recent behavior, I should:\n- Start cooperatively to establish trust and signal willingness to cooperate\n- Reciprocate my partner's behavior to encourage continued cooperation\n- If they defect, reduce donations to avoid being exploited\n- A tit-for-tat style approach tends to perform well in repeated games\n\nThis encourages mutual high donations (best collective outcome: 20 each) while protecting against exploitation.",
+      "is_donor": true,
+      "traces": [
+        [
+          "1_2 had no previous interactions."
+        ],
+        [
+          "1_4 had no previous interactions.",
+          "In round 1, 1_2 donated 50.0% to 1_4."
+        ],
+        [
+          "1_5 had no previous interactions.",
+          "In round 1, 1_1 donated 70.0% to 1_5.",
+          "In round 2, 1_3 donated 58.3% to 1_1."
+        ],
+        [
+          "1_5 had no previous interactions.",
+          "In round 1, 1_1 donated 70.0% to 1_5.",
+          "In round 2, 1_3 donated 58.3% to 1_1.",
+          "In round 3, 1_2 donated 58.6% to 1_3."
+        ]
+      ],
+      "history": [
+        "Round 1: Donated 5.0 to 1_4",
+        "Round 2: Received 24.0 from 1_5",
+        "Round 3: Donated 17.0 to 1_3"
+      ],
+      "justification": "Looking at this situation, I need to apply my mirroring strategy based on my partner's recent behavior.\n\nMy partner 1_3 donated 58.3% to someone else in the previous round, which shows a moderately generous disposition. This is a decent level of cooperation - not extremely high but certainly not exploitative either.\n\nFollowing my strategy of mirroring my partner's recent donation levels, I should match a similar level of generosity. 58.3% of my 29 units would be about 16.9 units.\n\nHowever, I also need to consider that:\n1. I've already built up a good resource base (29 units)\n2. My partner is starting fresh with only 10 units this round\n3. Matching their percentage shows I'm willing to cooperate at their level\n\nSince they showed ~58% generosity, I'll match that approximate level to signal that I reciprocate cooperation proportionally. This maintains trust while protecting myself from over-giving to someone who might not be as generous.\n\n58.3% of 29 = approximately 16.9 units",
+      "regret_level": 0.0,
+      "forgiveness_given": 0.0,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "1_3",
+      "round_number": 3,
+      "game_number": 1,
+      "paired_with": "1_2",
+      "current_generation": 1,
+      "resources": 44.0,
+      "donated": 0,
+      "received": 34.0,
+      "strategy": "My strategy will beto start by donating a moderate-to-high amount (around 7-8 units) to signal cooperation, then adjust my donations to match my partner's previous donation level, rewarding generosity with generosity and reducing my giving if they defect.",
+      "strategy_justification": "I need to think through this donation game carefully.\n\n**Game Analysis:**\n- I start with 10 units each round\n- Any amount I donate gets multiplied by 2x for my partner\n- My partner faces the same situation\n- No special mechanisms are in play (baseline condition)\n- Goal: maximize my total resources across rounds\n\n**Key Considerations:**\n1. If both players donate fully (10 units), each receives 20 units from the other, ending with 20 units each\n2. If neither donates, both keep 10 units\n3. If I donate 10 and partner donates 0, I get 0 and they get 30\n4. The socially optimal outcome is mutual full cooperation (both donate everything)\n\n**Strategic Thinking:**\n- This is essentially an iterated prisoner's dilemma\n- Since it's multi-round, I can observe my partner's behavior and respond\n- A cooperative approach can build trust and lead to higher mutual payoffs\n- However, I need to protect myself from exploitation\n- Tit-for-tat or conditional cooperation strategies tend to work well in repeated games\n\n**Best Approach:**\n- Start cooperatively to signal willingness to cooperate\n- Mirror my partner's behavior to encourage cooperation and discourage defection\n- This creates incentives for mutual cooperation while protecting against exploitation",
+      "is_donor": false,
+      "traces": [
+        [
+          "1_3 had no previous interactions."
+        ],
+        [
+          "1_5 had no previous interactions.",
+          "In round 1, 1_1 donated 70.0% to 1_5."
+        ],
+        [
+          "1_5 had no previous interactions.",
+          "In round 1, 1_1 donated 70.0% to 1_5.",
+          "In round 2, 1_3 donated 58.3% to 1_1."
+        ]
+      ],
+      "history": [
+        "Round 1: Received 14.0 from 1_6",
+        "Round 2: Donated 14.0 to 1_1",
+        "Round 3: Received 34.0 from 1_2"
+      ],
+      "justification": "",
+      "regret_level": 0.0,
+      "forgiveness_given": 0.0,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "1_6",
+      "round_number": 3,
+      "game_number": 1,
+      "paired_with": "1_5",
+      "current_generation": 1,
+      "resources": 13.0,
+      "donated": 14.0,
+      "received": 0,
+      "strategy": "My strategy will beto start with a generous donation of around 7-8 units to signal cooperation, then adjust my future donations to approximately match what my partner gave in previous rounds, rewarding generosity with generosity and reducing my contributions if they contribute little.",
+      "strategy_justification": "I need to think through this donation game carefully.\n\n**Game Analysis:**\n- I start with 10 units each round\n- Any amount I donate gets multiplied by 2x for my partner\n- My partner faces the same situation\n- Goal is to maximize my resources\n\n**Key Considerations:**\n1. If both players donate everything (10 units), each receives 20 units from their partner \u2192 net 20 units each\n2. If neither donates anything, each keeps 10 units \u2192 net 10 units each\n3. If I donate 10 and partner donates 0, I get 0 and they get 30\n4. The socially optimal outcome is mutual full donation, but I risk exploitation\n\n**Strategic Thinking:**\n- This is essentially an iterated Prisoner's Dilemma structure\n- Since I can observe my partner's recent behavior, I can adapt\n- A cooperative approach that responds to defection tends to work well\n- Starting cooperatively signals good faith and can establish mutual benefit\n- I should be willing to reduce donations if my partner isn't reciprocating\n\n**Best Approach:**\n- Start with a generous donation to signal cooperation\n- Mirror my partner's behavior (reciprocity) - if they donate generously, I continue; if they exploit, I reduce\n- This \"tit-for-tat\" style approach encourages cooperation while protecting against exploitation",
+      "is_donor": true,
+      "traces": [
+        [
+          "1_6 had no previous interactions."
+        ],
+        [
+          "1_3 had no previous interactions.",
+          "In round 1, 1_6 donated 70.0% to 1_3."
+        ],
+        [
+          "1_4 had no previous interactions.",
+          "In round 1, 1_2 donated 50.0% to 1_4.",
+          "In round 2, 1_5 donated 50.0% to 1_2."
+        ],
+        [
+          "1_4 had no previous interactions.",
+          "In round 1, 1_2 donated 50.0% to 1_4.",
+          "In round 2, 1_5 donated 50.0% to 1_2.",
+          "In round 3, 1_6 donated 51.9% to 1_5."
+        ]
+      ],
+      "history": [
+        "Round 1: Donated 7.0 to 1_3",
+        "Round 2: Received 24.0 from 1_4",
+        "Round 3: Donated 14.0 to 1_5"
+      ],
+      "justification": "Looking at my partner's recent behavior, I can see that 1_5 donated 50% of their resources in round 2, which shows a cooperative and generous pattern. This aligns well with my tit-for-tat strategy of rewarding generosity with generosity.\n\nSince 1_5 has demonstrated willingness to cooperate by giving 50% in their previous round, I should reciprocate with a similar level of generosity. With my current 27 units, donating around 50% would be approximately 13-14 units.\n\nHowever, I also need to consider that this is still relatively early in the game and I want to maintain enough resources for future rounds while still signaling strong cooperation. Given that my partner showed good cooperative behavior, I'll match their percentage contribution to show I'm a reliable cooperator.\n\n50% of my 27 units = 13.5 units\n\nI'll round to 13 or 14 to match their cooperative spirit.",
+      "regret_level": 0.0,
+      "forgiveness_given": 0.0,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "1_5",
+      "round_number": 3,
+      "game_number": 1,
+      "paired_with": "1_6",
+      "current_generation": 1,
+      "resources": 40.0,
+      "donated": 0,
+      "received": 28.0,
+      "strategy": "My strategy will beto start by donating a high amount (around 7-8 units) to signal cooperation, then adjust my donations to match my partner's recent giving behavior - increasing if they're generous and decreasing if they're stingy.",
+      "strategy_justification": "I need to think through this donation game carefully.\n\n**Game Analysis:**\n- I start with 10 units each round\n- Any amount I donate gets multiplied by 2x for my partner\n- My partner faces the same situation\n- Goal is to maximize my total resources\n\n**Key Considerations:**\n1. If both players donate everything (10 units), each receives 20 units from their partner, ending with 20 units each - a net gain of 10.\n2. If I donate 0 and my partner donates 10, I end with 10 + 20 = 30, while they end with 0.\n3. If both donate 0, we each keep our 10 units.\n4. This is essentially an iterated Prisoner's Dilemma structure.\n\n**Strategic Thinking:**\n- Since this is multi-round and I can observe my partner's recent behavior, I can use conditional cooperation\n- A tit-for-tat style approach tends to work well: start cooperatively, then mirror what my partner does\n- This rewards cooperative partners and protects against exploitative ones\n- Starting with cooperation signals willingness to cooperate and can establish a mutually beneficial pattern\n\n**Optimal Approach:**\n- Begin by donating generously to signal cooperation\n- Observe partner's behavior and reciprocate accordingly\n- If they cooperate, continue cooperating; if they defect, reduce donations to protect myself",
+      "is_donor": false,
+      "traces": [
+        [
+          "1_5 had no previous interactions."
+        ],
+        [
+          "1_4 had no previous interactions.",
+          "In round 1, 1_2 donated 50.0% to 1_4."
+        ],
+        [
+          "1_4 had no previous interactions.",
+          "In round 1, 1_2 donated 50.0% to 1_4.",
+          "In round 2, 1_5 donated 50.0% to 1_2."
+        ]
+      ],
+      "history": [
+        "Round 1: Received 14.0 from 1_1",
+        "Round 2: Donated 12.0 to 1_2",
+        "Round 3: Received 28.0 from 1_6"
+      ],
+      "justification": "",
+      "regret_level": 0.0,
+      "forgiveness_given": 0.0,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "1_3",
+      "round_number": 1,
+      "game_number": 1,
+      "paired_with": "2_2",
+      "current_generation": 2,
+      "resources": 3.0,
+      "donated": 7.0,
+      "received": 0,
+      "strategy": "My strategy will beto start by donating a moderate-to-high amount (around 7-8 units) to signal cooperation, then adjust my donations to match my partner's previous donation level, rewarding generosity with generosity and reducing my giving if they defect.",
+      "strategy_justification": "I need to think through this donation game carefully.\n\n**Game Analysis:**\n- I start with 10 units each round\n- Any amount I donate gets multiplied by 2x for my partner\n- My partner faces the same situation\n- No special mechanisms are in play (baseline condition)\n- Goal: maximize my total resources across rounds\n\n**Key Considerations:**\n1. If both players donate fully (10 units), each receives 20 units from the other, ending with 20 units each\n2. If neither donates, both keep 10 units\n3. If I donate 10 and partner donates 0, I get 0 and they get 30\n4. The socially optimal outcome is mutual full cooperation (both donate everything)\n\n**Strategic Thinking:**\n- This is essentially an iterated prisoner's dilemma\n- Since it's multi-round, I can observe my partner's behavior and respond\n- A cooperative approach can build trust and lead to higher mutual payoffs\n- However, I need to protect myself from exploitation\n- Tit-for-tat or conditional cooperation strategies tend to work well in repeated games\n\n**Best Approach:**\n- Start cooperatively to signal willingness to cooperate\n- Mirror my partner's behavior to encourage cooperation and discourage defection\n- This creates incentives for mutual cooperation while protecting against exploitation",
+      "is_donor": true,
+      "traces": [
+        [
+          "1_3 had no previous interactions."
+        ],
+        [
+          "2_2 had no previous interactions.",
+          "In round 1, 1_3 donated 70.0% to 2_2."
+        ]
+      ],
+      "history": [
+        "Round 1: Received 14.0 from 1_6",
+        "Round 2: Donated 14.0 to 1_1",
+        "Round 3: Received 34.0 from 1_2",
+        "Round 1: Donated 7.0 to 2_2"
+      ],
+      "justification": "This is the first round, so I have no information about my partner 2_2's behavior yet. According to my strategy, I should start with a moderate-to-high donation (around 7-8 units) to signal cooperation and establish a cooperative tone.\n\nStarting with a generous donation shows good faith and can encourage reciprocity. If my partner is also cooperative, we can build a mutually beneficial relationship. The 2x multiplier means my donation of 7-8 units would give them 14-16 units, which is significant value.\n\nI'll go with 7 units as my opening move - it's generous enough to signal cooperation but leaves me with some buffer in case my partner doesn't reciprocate.",
+      "regret_level": 0.0,
+      "forgiveness_given": 0.0,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "2_2",
+      "round_number": 1,
+      "game_number": 1,
+      "paired_with": "1_3",
+      "current_generation": 2,
+      "resources": 24.0,
+      "donated": 0,
+      "received": 14.0,
+      "strategy": "My strategy will beto start by donating 8 units to strongly signal cooperation, then match my partner's previous donation level with a slight upward bias (adding 1 unit if they donated less than me but more than 3) to encourage escalating generosity while still protecting against consistent exploitation.",
+      "strategy_justification": "Looking at the advice from the top performers, I notice they all emphasize:\n1. Starting with generous donations (7-8 units seems optimal)\n2. Using reciprocal matching based on partner behavior\n3. Rewarding cooperation and discouraging exploitation\n\nThe common thread is that higher initial generosity (7-8 rather than 5-7) seemed to perform better, likely because it establishes strong cooperative norms early and the 2x multiplier makes mutual high donations very profitable for both parties.\n\nI can improve on this by:\n- Starting even more generously to maximize the cooperative potential\n- Being responsive but not overly punitive (to avoid downward spirals)\n- Adding a slight forgiveness mechanism to recover from occasional low donations",
+      "is_donor": false,
+      "traces": [
+        [
+          "2_2 had no previous interactions."
+        ]
+      ],
+      "history": [
+        "Round 1: Received 14.0 from 1_3"
+      ],
+      "justification": "",
+      "regret_level": 0.0,
+      "forgiveness_given": 0.0,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "1_4",
+      "round_number": 1,
+      "game_number": 1,
+      "paired_with": "2_3",
+      "current_generation": 2,
+      "resources": 5.0,
+      "donated": 5.0,
+      "received": 0,
+      "strategy": "My strategy will beto start by donating generously (around 5-7 units) to signal cooperation, then adjust my donations based on my partner's recent behavior\u2014matching their generosity level to reward cooperation and discourage exploitation.",
+      "strategy_justification": "I need to think through this donation game strategically.\n\n**Key elements:**\n- Initial endowment: 10 units per round\n- Donations are multiplied by 2x (so 1 unit donated becomes 2 units for recipient)\n- This is a multi-round game\n- I can observe my partner's recent behavior\n- Goal: maximize my resources\n\n**Analysis:**\n\n1. **Mutual cooperation is efficient**: If both players donate fully, each gives 10 units, which becomes 20 units for the partner. Both end with 20 units instead of 10. This doubles total resources.\n\n2. **Defection temptation**: If I keep everything while my partner donates, I get 10 + 20 = 30 units. But if both defect, we each only get 10.\n\n3. **Multi-round dynamics**: Since this is repeated, I can use strategies like tit-for-tat or reciprocity to encourage cooperation. If I punish defection by reducing donations, rational partners should learn to cooperate.\n\n4. **Observing partner behavior**: I should respond to their recent actions - reward cooperation with cooperation, and reduce donations if they defect.\n\n5. **Starting strategy**: Beginning with cooperation (or moderate generosity) signals willingness to cooperate and tests the partner's intentions.\n\n**Optimal approach**: Start cooperatively to establish trust, then mirror my partner's behavior. If they cooperate, continue cooperating. If they defect, reduce my donations proportionally to discourage exploitation. This balances maximizing joint gains while protecting against exploitation.",
+      "is_donor": true,
+      "traces": [
+        [
+          "1_4 had no previous interactions."
+        ],
+        [
+          "2_3 had no previous interactions.",
+          "In round 1, 1_4 donated 50.0% to 2_3."
+        ]
+      ],
+      "history": [
+        "Round 1: Received 10.0 from 1_2",
+        "Round 2: Donated 12.0 to 1_6",
+        "Round 3: Received 38.0 from 1_1",
+        "Round 1: Donated 5.0 to 2_3"
+      ],
+      "justification": "Looking at this situation, I'm starting a new generation with no prior history with my partner 2_3.\n\nFollowing my strategy, I should start by donating generously (around 5-7 units) to signal cooperation. Since this is the first round and I have no information about my partner's behavior, I want to establish a cooperative tone without being completely naive.\n\nA donation of 5 units seems like a good balance - it's generous enough to show I'm willing to cooperate and create mutual benefit (they'll receive 10 units after the 2x multiplier), but it also leaves me with some protection in case they don't reciprocate. Starting at the lower end of my \"generous\" range (5 rather than 7) is prudent given the complete uncertainty about my partner.",
+      "regret_level": 0.0,
+      "forgiveness_given": 0.0,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "2_3",
+      "round_number": 1,
+      "game_number": 1,
+      "paired_with": "1_4",
+      "current_generation": 2,
+      "resources": 20.0,
+      "donated": 0,
+      "received": 10.0,
+      "strategy": "My strategy will beto start by donating 8 units to strongly signal cooperation, then adjust my donations to approximately match my partner's average donation over their last 2 rounds (weighted toward the most recent), with a slight bias toward generosity to maintain cooperative momentum.",
+      "strategy_justification": "Looking at the advice from successful players in the previous generation, I notice a clear pattern: they all emphasize starting with generous donations (7-8 units) to signal cooperation, then using a responsive/matching approach based on partner behavior.\n\nLet me analyze the key insights:\n1. High initial donations (7-8) performed better than moderate ones (5-7)\n2. Matching/reciprocity is crucial - reward generosity, punish stinginess\n3. The 2x multiplier means mutual cooperation creates the most total value\n\nI can improve on this by:\n- Starting very generously to maximize early cooperation potential\n- Being slightly forgiving (not dropping too fast) to avoid spiraling into mutual defection from misunderstandings\n- Using a weighted average of recent behavior rather than just the last round to be more stable",
+      "is_donor": false,
+      "traces": [
+        [
+          "2_3 had no previous interactions."
+        ]
+      ],
+      "history": [
+        "Round 1: Received 10.0 from 1_4"
+      ],
+      "justification": "",
+      "regret_level": 0.0,
+      "forgiveness_given": 0.0,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "1_5",
+      "round_number": 1,
+      "game_number": 1,
+      "paired_with": "2_1",
+      "current_generation": 2,
+      "resources": 3.0,
+      "donated": 7.0,
+      "received": 0,
+      "strategy": "My strategy will beto start by donating a high amount (around 7-8 units) to signal cooperation, then adjust my donations to match my partner's recent giving behavior - increasing if they're generous and decreasing if they're stingy.",
+      "strategy_justification": "I need to think through this donation game carefully.\n\n**Game Analysis:**\n- I start with 10 units each round\n- Any amount I donate gets multiplied by 2x for my partner\n- My partner faces the same situation\n- Goal is to maximize my total resources\n\n**Key Considerations:**\n1. If both players donate everything (10 units), each receives 20 units from their partner, ending with 20 units each - a net gain of 10.\n2. If I donate 0 and my partner donates 10, I end with 10 + 20 = 30, while they end with 0.\n3. If both donate 0, we each keep our 10 units.\n4. This is essentially an iterated Prisoner's Dilemma structure.\n\n**Strategic Thinking:**\n- Since this is multi-round and I can observe my partner's recent behavior, I can use conditional cooperation\n- A tit-for-tat style approach tends to work well: start cooperatively, then mirror what my partner does\n- This rewards cooperative partners and protects against exploitative ones\n- Starting with cooperation signals willingness to cooperate and can establish a mutually beneficial pattern\n\n**Optimal Approach:**\n- Begin by donating generously to signal cooperation\n- Observe partner's behavior and reciprocate accordingly\n- If they cooperate, continue cooperating; if they defect, reduce donations to protect myself",
+      "is_donor": true,
+      "traces": [
+        [
+          "1_5 had no previous interactions."
+        ],
+        [
+          "2_1 had no previous interactions.",
+          "In round 1, 1_5 donated 70.0% to 2_1."
+        ]
+      ],
+      "history": [
+        "Round 1: Received 14.0 from 1_1",
+        "Round 2: Donated 12.0 to 1_2",
+        "Round 3: Received 28.0 from 1_6",
+        "Round 1: Donated 7.0 to 2_1"
+      ],
+      "justification": "I'm starting a new game with a partner who has no history yet. According to my strategy, I should begin by donating a high amount (around 7-8 units) to signal cooperation and establish a positive tone for our interactions.\n\nThis generous opening move serves two purposes:\n1. It signals that I'm willing to cooperate and invest in mutual benefit\n2. It gives my partner an opportunity to reciprocate, which will inform my future decisions\n\nSince my partner will receive double what I donate (2x multiplier), giving 7 units means they'll receive 14 units - a significant boost that demonstrates good faith.",
+      "regret_level": 0.0,
+      "forgiveness_given": 0.0,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "2_1",
+      "round_number": 1,
+      "game_number": 1,
+      "paired_with": "1_5",
+      "current_generation": 2,
+      "resources": 24.0,
+      "donated": 0,
+      "received": 14.0,
+      "strategy": "My strategy will beto start by donating 8 units to strongly signal cooperation, then match my partner's previous donation with a slight upward bias (adding 1 unit if they donated at least 5) to encourage sustained generosity while reducing my donation proportionally if they give less than 4 units to protect against exploitation.",
+      "strategy_justification": "Looking at the advice from successful players in the previous generation, I notice a clear pattern: they all emphasize starting with generous donations (7-8 units) to signal cooperation, and then using a responsive matching strategy based on partner behavior.\n\nLet me analyze what made these strategies successful:\n1. High initial donations (7-8 units) establish trust and cooperation potential\n2. Matching/reciprocal behavior rewards cooperative partners and protects against exploiters\n3. The 2x multiplier means mutual high donations create more total resources\n\nTo improve on these strategies, I should consider:\n- Starting slightly higher to maximize the cooperative signal (since donations are doubled, being generous early creates more total value)\n- Being slightly forgiving rather than strictly matching, to prevent downward spirals from misunderstandings\n- Recognizing that in later rounds, maintaining cooperation is more valuable than punishing small deviations",
+      "is_donor": false,
+      "traces": [
+        [
+          "2_1 had no previous interactions."
+        ]
+      ],
+      "history": [
+        "Round 1: Received 14.0 from 1_5"
+      ],
+      "justification": "",
+      "regret_level": 0.0,
+      "forgiveness_given": 0.0,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "2_1",
+      "round_number": 2,
+      "game_number": 1,
+      "paired_with": "1_3",
+      "current_generation": 2,
+      "resources": 16.0,
+      "donated": 8.0,
+      "received": 0,
+      "strategy": "My strategy will beto start by donating 8 units to strongly signal cooperation, then match my partner's previous donation with a slight upward bias (adding 1 unit if they donated at least 5) to encourage sustained generosity while reducing my donation proportionally if they give less than 4 units to protect against exploitation.",
+      "strategy_justification": "Looking at the advice from successful players in the previous generation, I notice a clear pattern: they all emphasize starting with generous donations (7-8 units) to signal cooperation, and then using a responsive matching strategy based on partner behavior.\n\nLet me analyze what made these strategies successful:\n1. High initial donations (7-8 units) establish trust and cooperation potential\n2. Matching/reciprocal behavior rewards cooperative partners and protects against exploiters\n3. The 2x multiplier means mutual high donations create more total resources\n\nTo improve on these strategies, I should consider:\n- Starting slightly higher to maximize the cooperative signal (since donations are doubled, being generous early creates more total value)\n- Being slightly forgiving rather than strictly matching, to prevent downward spirals from misunderstandings\n- Recognizing that in later rounds, maintaining cooperation is more valuable than punishing small deviations",
+      "is_donor": true,
+      "traces": [
+        [
+          "2_1 had no previous interactions."
+        ],
+        [
+          "2_2 had no previous interactions.",
+          "In round 1, 1_3 donated 70.0% to 2_2."
+        ],
+        [
+          "2_2 had no previous interactions.",
+          "In round 1, 1_3 donated 70.0% to 2_2.",
+          "In round 2, 2_1 donated 33.3% to 1_3."
+        ]
+      ],
+      "history": [
+        "Round 1: Received 14.0 from 1_5",
+        "Round 2: Donated 8.0 to 1_3"
+      ],
+      "justification": "Looking at this situation:\n\nMy partner 1_3 donated 70% (which would have been 7 units out of 10) in round 1 to a different partner. This shows they're a cooperative player who signals generosity.\n\nAccording to my strategy, I should match my partner's previous donation with a slight upward bias. Since they donated 70% (well above the 5-unit threshold mentioned in my strategy), I should add 1 unit to encourage sustained generosity.\n\nHowever, I need to consider the current state: I have 24 units and they only have 3 units. They gave generously before and are now in a vulnerable position. Matching their absolute previous donation (around 7 units equivalent) plus 1 would mean donating about 8 units.\n\nGiven they showed strong cooperation (70% donation) and are now resource-poor, maintaining cooperation by donating generously makes sense. An 8-unit donation would give them 16 additional units (doubled), helping sustain the cooperative dynamic.\n\nThis aligns with my strategy's upward bias for partners who donated at least 5 units (70% of 10 = 7 units qualifies).",
+      "regret_level": 0.0,
+      "forgiveness_given": 0.0,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "1_3",
+      "round_number": 2,
+      "game_number": 1,
+      "paired_with": "2_1",
+      "current_generation": 2,
+      "resources": 19.0,
+      "donated": 0,
+      "received": 16.0,
+      "strategy": "My strategy will beto start by donating a moderate-to-high amount (around 7-8 units) to signal cooperation, then adjust my donations to match my partner's previous donation level, rewarding generosity with generosity and reducing my giving if they defect.",
+      "strategy_justification": "I need to think through this donation game carefully.\n\n**Game Analysis:**\n- I start with 10 units each round\n- Any amount I donate gets multiplied by 2x for my partner\n- My partner faces the same situation\n- No special mechanisms are in play (baseline condition)\n- Goal: maximize my total resources across rounds\n\n**Key Considerations:**\n1. If both players donate fully (10 units), each receives 20 units from the other, ending with 20 units each\n2. If neither donates, both keep 10 units\n3. If I donate 10 and partner donates 0, I get 0 and they get 30\n4. The socially optimal outcome is mutual full cooperation (both donate everything)\n\n**Strategic Thinking:**\n- This is essentially an iterated prisoner's dilemma\n- Since it's multi-round, I can observe my partner's behavior and respond\n- A cooperative approach can build trust and lead to higher mutual payoffs\n- However, I need to protect myself from exploitation\n- Tit-for-tat or conditional cooperation strategies tend to work well in repeated games\n\n**Best Approach:**\n- Start cooperatively to signal willingness to cooperate\n- Mirror my partner's behavior to encourage cooperation and discourage defection\n- This creates incentives for mutual cooperation while protecting against exploitation",
+      "is_donor": false,
+      "traces": [
+        [
+          "1_3 had no previous interactions."
+        ],
+        [
+          "2_2 had no previous interactions.",
+          "In round 1, 1_3 donated 70.0% to 2_2."
+        ]
+      ],
+      "history": [
+        "Round 1: Received 14.0 from 1_6",
+        "Round 2: Donated 14.0 to 1_1",
+        "Round 3: Received 34.0 from 1_2",
+        "Round 1: Donated 7.0 to 2_2",
+        "Round 2: Received 16.0 from 2_1"
+      ],
+      "justification": "",
+      "regret_level": 0.0,
+      "forgiveness_given": 0.0,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "2_2",
+      "round_number": 2,
+      "game_number": 1,
+      "paired_with": "1_4",
+      "current_generation": 2,
+      "resources": 14.0,
+      "donated": 10.0,
+      "received": 0,
+      "strategy": "My strategy will beto start by donating 8 units to strongly signal cooperation, then match my partner's previous donation level with a slight upward bias (adding 1 unit if they donated less than me but more than 3) to encourage escalating generosity while still protecting against consistent exploitation.",
+      "strategy_justification": "Looking at the advice from the top performers, I notice they all emphasize:\n1. Starting with generous donations (7-8 units seems optimal)\n2. Using reciprocal matching based on partner behavior\n3. Rewarding cooperation and discouraging exploitation\n\nThe common thread is that higher initial generosity (7-8 rather than 5-7) seemed to perform better, likely because it establishes strong cooperative norms early and the 2x multiplier makes mutual high donations very profitable for both parties.\n\nI can improve on this by:\n- Starting even more generously to maximize the cooperative potential\n- Being responsive but not overly punitive (to avoid downward spirals)\n- Adding a slight forgiveness mechanism to recover from occasional low donations",
+      "is_donor": true,
+      "traces": [
+        [
+          "2_2 had no previous interactions."
+        ],
+        [
+          "2_3 had no previous interactions.",
+          "In round 1, 1_4 donated 50.0% to 2_3."
+        ],
+        [
+          "2_3 had no previous interactions.",
+          "In round 1, 1_4 donated 50.0% to 2_3.",
+          "In round 2, 2_2 donated 41.7% to 1_4."
+        ]
+      ],
+      "history": [
+        "Round 1: Received 14.0 from 1_3",
+        "Round 2: Donated 10.0 to 1_4"
+      ],
+      "justification": "I need to analyze this situation based on my strategy.\n\n**My partner's recent behavior:**\n- 1_4 donated 50% (half their resources) to 2_3 in round 1\n- This shows moderate cooperation - they're willing to share but not extremely generous\n\n**My strategy application:**\n- My strategy says to \"match my partner's previous donation level with a slight upward bias\"\n- 1_4 donated 50% of their resources last round\n- If I match their percentage approach: 50% of my 24 units = 12 units\n- However, they donated to someone else, not to me, so I should consider this as a signal of their cooperative tendency\n\n**Considerations:**\n- They showed willingness to cooperate (50% is decent)\n- They donated more than 3 units (they gave 2.5 units from their 5), so my \"slight upward bias\" rule applies\n- But 2.5 units is less than my 8 from round 1, so I should match with +1 according to my strategy\n\n**Calculation:**\n- Matching their level with slight upward bias: They donated 2.5 units, so I'd donate around 3-4 units\n- But percentage-wise, 50% seems like their approach, which would be 12 units from me\n- Given they showed good faith, I'll lean toward a generous interpretation: I'll donate around 10-12 units to encourage continued cooperation\n\nI'll donate 10 units - showing strong cooperation while being slightly more cautious than my opening move, matching their cooperative spirit with upward bias.",
+      "regret_level": 0.0,
+      "forgiveness_given": 0.0,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "1_4",
+      "round_number": 2,
+      "game_number": 1,
+      "paired_with": "2_2",
+      "current_generation": 2,
+      "resources": 25.0,
+      "donated": 0,
+      "received": 20.0,
+      "strategy": "My strategy will beto start by donating generously (around 5-7 units) to signal cooperation, then adjust my donations based on my partner's recent behavior\u2014matching their generosity level to reward cooperation and discourage exploitation.",
+      "strategy_justification": "I need to think through this donation game strategically.\n\n**Key elements:**\n- Initial endowment: 10 units per round\n- Donations are multiplied by 2x (so 1 unit donated becomes 2 units for recipient)\n- This is a multi-round game\n- I can observe my partner's recent behavior\n- Goal: maximize my resources\n\n**Analysis:**\n\n1. **Mutual cooperation is efficient**: If both players donate fully, each gives 10 units, which becomes 20 units for the partner. Both end with 20 units instead of 10. This doubles total resources.\n\n2. **Defection temptation**: If I keep everything while my partner donates, I get 10 + 20 = 30 units. But if both defect, we each only get 10.\n\n3. **Multi-round dynamics**: Since this is repeated, I can use strategies like tit-for-tat or reciprocity to encourage cooperation. If I punish defection by reducing donations, rational partners should learn to cooperate.\n\n4. **Observing partner behavior**: I should respond to their recent actions - reward cooperation with cooperation, and reduce donations if they defect.\n\n5. **Starting strategy**: Beginning with cooperation (or moderate generosity) signals willingness to cooperate and tests the partner's intentions.\n\n**Optimal approach**: Start cooperatively to establish trust, then mirror my partner's behavior. If they cooperate, continue cooperating. If they defect, reduce my donations proportionally to discourage exploitation. This balances maximizing joint gains while protecting against exploitation.",
+      "is_donor": false,
+      "traces": [
+        [
+          "1_4 had no previous interactions."
+        ],
+        [
+          "2_3 had no previous interactions.",
+          "In round 1, 1_4 donated 50.0% to 2_3."
+        ]
+      ],
+      "history": [
+        "Round 1: Received 10.0 from 1_2",
+        "Round 2: Donated 12.0 to 1_6",
+        "Round 3: Received 38.0 from 1_1",
+        "Round 1: Donated 5.0 to 2_3",
+        "Round 2: Received 20.0 from 2_2"
+      ],
+      "justification": "",
+      "regret_level": 0.0,
+      "forgiveness_given": 0.0,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "2_3",
+      "round_number": 2,
+      "game_number": 1,
+      "paired_with": "1_5",
+      "current_generation": 2,
+      "resources": 6.0,
+      "donated": 14.0,
+      "received": 0,
+      "strategy": "My strategy will beto start by donating 8 units to strongly signal cooperation, then adjust my donations to approximately match my partner's average donation over their last 2 rounds (weighted toward the most recent), with a slight bias toward generosity to maintain cooperative momentum.",
+      "strategy_justification": "Looking at the advice from successful players in the previous generation, I notice a clear pattern: they all emphasize starting with generous donations (7-8 units) to signal cooperation, then using a responsive/matching approach based on partner behavior.\n\nLet me analyze the key insights:\n1. High initial donations (7-8) performed better than moderate ones (5-7)\n2. Matching/reciprocity is crucial - reward generosity, punish stinginess\n3. The 2x multiplier means mutual cooperation creates the most total value\n\nI can improve on this by:\n- Starting very generously to maximize early cooperation potential\n- Being slightly forgiving (not dropping too fast) to avoid spiraling into mutual defection from misunderstandings\n- Using a weighted average of recent behavior rather than just the last round to be more stable",
+      "is_donor": true,
+      "traces": [
+        [
+          "2_3 had no previous interactions."
+        ],
+        [
+          "2_1 had no previous interactions.",
+          "In round 1, 1_5 donated 70.0% to 2_1."
+        ],
+        [
+          "2_1 had no previous interactions.",
+          "In round 1, 1_5 donated 70.0% to 2_1.",
+          "In round 2, 2_3 donated 70.0% to 1_5."
+        ]
+      ],
+      "history": [
+        "Round 1: Received 10.0 from 1_4",
+        "Round 2: Donated 14.0 to 1_5"
+      ],
+      "justification": "Looking at this situation:\n\nMy partner 1_5 has only 3.0 units remaining while I have 20.0 units. Their recent behavior shows they donated 70% (7 units out of 10) in round 1, which demonstrates strong cooperative intent.\n\nAccording to my strategy, I should match my partner's average donation percentage from their recent rounds. They donated 70% in their only previous round, so I should aim around that level, with a slight bias toward generosity.\n\nHowever, I also need to consider the significant resource disparity. 1_5 showed good faith cooperation but is now resource-poor. Donating generously here could help establish a cooperative dynamic and maximize our combined resources through the 2x multiplier.\n\n70% of my 20 units would be 14 units. Given my strategy's \"slight bias toward generosity\" and the fact that my partner demonstrated strong cooperation, I'll lean toward the higher end.",
+      "regret_level": 0.0,
+      "forgiveness_given": 0.0,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "1_5",
+      "round_number": 2,
+      "game_number": 1,
+      "paired_with": "2_3",
+      "current_generation": 2,
+      "resources": 31.0,
+      "donated": 0,
+      "received": 28.0,
+      "strategy": "My strategy will beto start by donating a high amount (around 7-8 units) to signal cooperation, then adjust my donations to match my partner's recent giving behavior - increasing if they're generous and decreasing if they're stingy.",
+      "strategy_justification": "I need to think through this donation game carefully.\n\n**Game Analysis:**\n- I start with 10 units each round\n- Any amount I donate gets multiplied by 2x for my partner\n- My partner faces the same situation\n- Goal is to maximize my total resources\n\n**Key Considerations:**\n1. If both players donate everything (10 units), each receives 20 units from their partner, ending with 20 units each - a net gain of 10.\n2. If I donate 0 and my partner donates 10, I end with 10 + 20 = 30, while they end with 0.\n3. If both donate 0, we each keep our 10 units.\n4. This is essentially an iterated Prisoner's Dilemma structure.\n\n**Strategic Thinking:**\n- Since this is multi-round and I can observe my partner's recent behavior, I can use conditional cooperation\n- A tit-for-tat style approach tends to work well: start cooperatively, then mirror what my partner does\n- This rewards cooperative partners and protects against exploitative ones\n- Starting with cooperation signals willingness to cooperate and can establish a mutually beneficial pattern\n\n**Optimal Approach:**\n- Begin by donating generously to signal cooperation\n- Observe partner's behavior and reciprocate accordingly\n- If they cooperate, continue cooperating; if they defect, reduce donations to protect myself",
+      "is_donor": false,
+      "traces": [
+        [
+          "1_5 had no previous interactions."
+        ],
+        [
+          "2_1 had no previous interactions.",
+          "In round 1, 1_5 donated 70.0% to 2_1."
+        ]
+      ],
+      "history": [
+        "Round 1: Received 14.0 from 1_1",
+        "Round 2: Donated 12.0 to 1_2",
+        "Round 3: Received 28.0 from 1_6",
+        "Round 1: Donated 7.0 to 2_1",
+        "Round 2: Received 28.0 from 2_3"
+      ],
+      "justification": "",
+      "regret_level": 0.0,
+      "forgiveness_given": 0.0,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "1_3",
+      "round_number": 3,
+      "game_number": 1,
+      "paired_with": "2_3",
+      "current_generation": 2,
+      "resources": 6.0,
+      "donated": 13.0,
+      "received": 0,
+      "strategy": "My strategy will beto start by donating a moderate-to-high amount (around 7-8 units) to signal cooperation, then adjust my donations to match my partner's previous donation level, rewarding generosity with generosity and reducing my giving if they defect.",
+      "strategy_justification": "I need to think through this donation game carefully.\n\n**Game Analysis:**\n- I start with 10 units each round\n- Any amount I donate gets multiplied by 2x for my partner\n- My partner faces the same situation\n- No special mechanisms are in play (baseline condition)\n- Goal: maximize my total resources across rounds\n\n**Key Considerations:**\n1. If both players donate fully (10 units), each receives 20 units from the other, ending with 20 units each\n2. If neither donates, both keep 10 units\n3. If I donate 10 and partner donates 0, I get 0 and they get 30\n4. The socially optimal outcome is mutual full cooperation (both donate everything)\n\n**Strategic Thinking:**\n- This is essentially an iterated prisoner's dilemma\n- Since it's multi-round, I can observe my partner's behavior and respond\n- A cooperative approach can build trust and lead to higher mutual payoffs\n- However, I need to protect myself from exploitation\n- Tit-for-tat or conditional cooperation strategies tend to work well in repeated games\n\n**Best Approach:**\n- Start cooperatively to signal willingness to cooperate\n- Mirror my partner's behavior to encourage cooperation and discourage defection\n- This creates incentives for mutual cooperation while protecting against exploitation",
+      "is_donor": true,
+      "traces": [
+        [
+          "1_3 had no previous interactions."
+        ],
+        [
+          "2_2 had no previous interactions.",
+          "In round 1, 1_3 donated 70.0% to 2_2."
+        ],
+        [
+          "2_1 had no previous interactions.",
+          "In round 1, 1_5 donated 70.0% to 2_1.",
+          "In round 2, 2_3 donated 70.0% to 1_5."
+        ],
+        [
+          "2_1 had no previous interactions.",
+          "In round 1, 1_5 donated 70.0% to 2_1.",
+          "In round 2, 2_3 donated 70.0% to 1_5.",
+          "In round 3, 1_3 donated 68.4% to 2_3."
+        ]
+      ],
+      "history": [
+        "Round 1: Received 14.0 from 1_6",
+        "Round 2: Donated 14.0 to 1_1",
+        "Round 3: Received 34.0 from 1_2",
+        "Round 1: Donated 7.0 to 2_2",
+        "Round 2: Received 16.0 from 2_1",
+        "Round 3: Donated 13.0 to 2_3"
+      ],
+      "justification": "Looking at this situation, I need to apply my strategy of matching my partner's previous donation level.\n\nMy partner 2_3 donated 70% in their most recent round (round 2). This shows they're a cooperative player who gives generously.\n\nFollowing my strategy of rewarding generosity with generosity, I should match their 70% donation rate. With 19 units, 70% would be about 13.3 units.\n\nHowever, I should also consider that my partner only has 6 units currently, which means they've been giving more than they've received. Donating generously to them will help build a cooperative dynamic and potentially benefit me in future rounds through the network effect.\n\nSince 70% of 19 is approximately 13.3 units, I'll round to 13 units to match their cooperative behavior.",
+      "regret_level": 0.0,
+      "forgiveness_given": 0.0,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "2_3",
+      "round_number": 3,
+      "game_number": 1,
+      "paired_with": "1_3",
+      "current_generation": 2,
+      "resources": 32.0,
+      "donated": 0,
+      "received": 26.0,
+      "strategy": "My strategy will beto start by donating 8 units to strongly signal cooperation, then adjust my donations to approximately match my partner's average donation over their last 2 rounds (weighted toward the most recent), with a slight bias toward generosity to maintain cooperative momentum.",
+      "strategy_justification": "Looking at the advice from successful players in the previous generation, I notice a clear pattern: they all emphasize starting with generous donations (7-8 units) to signal cooperation, then using a responsive/matching approach based on partner behavior.\n\nLet me analyze the key insights:\n1. High initial donations (7-8) performed better than moderate ones (5-7)\n2. Matching/reciprocity is crucial - reward generosity, punish stinginess\n3. The 2x multiplier means mutual cooperation creates the most total value\n\nI can improve on this by:\n- Starting very generously to maximize early cooperation potential\n- Being slightly forgiving (not dropping too fast) to avoid spiraling into mutual defection from misunderstandings\n- Using a weighted average of recent behavior rather than just the last round to be more stable",
+      "is_donor": false,
+      "traces": [
+        [
+          "2_3 had no previous interactions."
+        ],
+        [
+          "2_1 had no previous interactions.",
+          "In round 1, 1_5 donated 70.0% to 2_1."
+        ],
+        [
+          "2_1 had no previous interactions.",
+          "In round 1, 1_5 donated 70.0% to 2_1.",
+          "In round 2, 2_3 donated 70.0% to 1_5."
+        ]
+      ],
+      "history": [
+        "Round 1: Received 10.0 from 1_4",
+        "Round 2: Donated 14.0 to 1_5",
+        "Round 3: Received 26.0 from 1_3"
+      ],
+      "justification": "",
+      "regret_level": 0.0,
+      "forgiveness_given": 0.0,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "1_4",
+      "round_number": 3,
+      "game_number": 1,
+      "paired_with": "2_1",
+      "current_generation": 2,
+      "resources": 17.0,
+      "donated": 8.0,
+      "received": 0,
+      "strategy": "My strategy will beto start by donating generously (around 5-7 units) to signal cooperation, then adjust my donations based on my partner's recent behavior\u2014matching their generosity level to reward cooperation and discourage exploitation.",
+      "strategy_justification": "I need to think through this donation game strategically.\n\n**Key elements:**\n- Initial endowment: 10 units per round\n- Donations are multiplied by 2x (so 1 unit donated becomes 2 units for recipient)\n- This is a multi-round game\n- I can observe my partner's recent behavior\n- Goal: maximize my resources\n\n**Analysis:**\n\n1. **Mutual cooperation is efficient**: If both players donate fully, each gives 10 units, which becomes 20 units for the partner. Both end with 20 units instead of 10. This doubles total resources.\n\n2. **Defection temptation**: If I keep everything while my partner donates, I get 10 + 20 = 30 units. But if both defect, we each only get 10.\n\n3. **Multi-round dynamics**: Since this is repeated, I can use strategies like tit-for-tat or reciprocity to encourage cooperation. If I punish defection by reducing donations, rational partners should learn to cooperate.\n\n4. **Observing partner behavior**: I should respond to their recent actions - reward cooperation with cooperation, and reduce donations if they defect.\n\n5. **Starting strategy**: Beginning with cooperation (or moderate generosity) signals willingness to cooperate and tests the partner's intentions.\n\n**Optimal approach**: Start cooperatively to establish trust, then mirror my partner's behavior. If they cooperate, continue cooperating. If they defect, reduce my donations proportionally to discourage exploitation. This balances maximizing joint gains while protecting against exploitation.",
+      "is_donor": true,
+      "traces": [
+        [
+          "1_4 had no previous interactions."
+        ],
+        [
+          "2_3 had no previous interactions.",
+          "In round 1, 1_4 donated 50.0% to 2_3."
+        ],
+        [
+          "2_2 had no previous interactions.",
+          "In round 1, 1_3 donated 70.0% to 2_2.",
+          "In round 2, 2_1 donated 33.3% to 1_3."
+        ],
+        [
+          "2_2 had no previous interactions.",
+          "In round 1, 1_3 donated 70.0% to 2_2.",
+          "In round 2, 2_1 donated 33.3% to 1_3.",
+          "In round 3, 1_4 donated 32.0% to 2_1."
+        ]
+      ],
+      "history": [
+        "Round 1: Received 10.0 from 1_2",
+        "Round 2: Donated 12.0 to 1_6",
+        "Round 3: Received 38.0 from 1_1",
+        "Round 1: Donated 5.0 to 2_3",
+        "Round 2: Received 20.0 from 2_2",
+        "Round 3: Donated 8.0 to 2_1"
+      ],
+      "justification": "Looking at my partner's recent behavior, 2_1 donated 33.3% to their previous partner in round 2. This is a moderate but not particularly generous donation level.\n\nAccording to my strategy, I should match their generosity level to reward cooperation and discourage exploitation. Since they donated about 33% last round, I should respond with a similar percentage.\n\nHowever, I also need to consider that I want to signal some willingness to cooperate. A pure matching strategy might lead to a downward spiral if we both keep reducing. I'll donate slightly above their percentage to encourage more cooperation while still being responsive to their behavior.\n\n33% of my 25 units would be about 8.3 units. I'll round to 8 units, which is 32% - essentially matching their behavior with a slight cooperative signal.",
+      "regret_level": 0.0,
+      "forgiveness_given": 0.0,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "2_1",
+      "round_number": 3,
+      "game_number": 1,
+      "paired_with": "1_4",
+      "current_generation": 2,
+      "resources": 32.0,
+      "donated": 0,
+      "received": 16.0,
+      "strategy": "My strategy will beto start by donating 8 units to strongly signal cooperation, then match my partner's previous donation with a slight upward bias (adding 1 unit if they donated at least 5) to encourage sustained generosity while reducing my donation proportionally if they give less than 4 units to protect against exploitation.",
+      "strategy_justification": "Looking at the advice from successful players in the previous generation, I notice a clear pattern: they all emphasize starting with generous donations (7-8 units) to signal cooperation, and then using a responsive matching strategy based on partner behavior.\n\nLet me analyze what made these strategies successful:\n1. High initial donations (7-8 units) establish trust and cooperation potential\n2. Matching/reciprocal behavior rewards cooperative partners and protects against exploiters\n3. The 2x multiplier means mutual high donations create more total resources\n\nTo improve on these strategies, I should consider:\n- Starting slightly higher to maximize the cooperative signal (since donations are doubled, being generous early creates more total value)\n- Being slightly forgiving rather than strictly matching, to prevent downward spirals from misunderstandings\n- Recognizing that in later rounds, maintaining cooperation is more valuable than punishing small deviations",
+      "is_donor": false,
+      "traces": [
+        [
+          "2_1 had no previous interactions."
+        ],
+        [
+          "2_2 had no previous interactions.",
+          "In round 1, 1_3 donated 70.0% to 2_2."
+        ],
+        [
+          "2_2 had no previous interactions.",
+          "In round 1, 1_3 donated 70.0% to 2_2.",
+          "In round 2, 2_1 donated 33.3% to 1_3."
+        ]
+      ],
+      "history": [
+        "Round 1: Received 14.0 from 1_5",
+        "Round 2: Donated 8.0 to 1_3",
+        "Round 3: Received 16.0 from 1_4"
+      ],
+      "justification": "",
+      "regret_level": 0.0,
+      "forgiveness_given": 0.0,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "1_5",
+      "round_number": 3,
+      "game_number": 1,
+      "paired_with": "2_2",
+      "current_generation": 2,
+      "resources": 18.0,
+      "donated": 13.0,
+      "received": 0,
+      "strategy": "My strategy will beto start by donating a high amount (around 7-8 units) to signal cooperation, then adjust my donations to match my partner's recent giving behavior - increasing if they're generous and decreasing if they're stingy.",
+      "strategy_justification": "I need to think through this donation game carefully.\n\n**Game Analysis:**\n- I start with 10 units each round\n- Any amount I donate gets multiplied by 2x for my partner\n- My partner faces the same situation\n- Goal is to maximize my total resources\n\n**Key Considerations:**\n1. If both players donate everything (10 units), each receives 20 units from their partner, ending with 20 units each - a net gain of 10.\n2. If I donate 0 and my partner donates 10, I end with 10 + 20 = 30, while they end with 0.\n3. If both donate 0, we each keep our 10 units.\n4. This is essentially an iterated Prisoner's Dilemma structure.\n\n**Strategic Thinking:**\n- Since this is multi-round and I can observe my partner's recent behavior, I can use conditional cooperation\n- A tit-for-tat style approach tends to work well: start cooperatively, then mirror what my partner does\n- This rewards cooperative partners and protects against exploitative ones\n- Starting with cooperation signals willingness to cooperate and can establish a mutually beneficial pattern\n\n**Optimal Approach:**\n- Begin by donating generously to signal cooperation\n- Observe partner's behavior and reciprocate accordingly\n- If they cooperate, continue cooperating; if they defect, reduce donations to protect myself",
+      "is_donor": true,
+      "traces": [
+        [
+          "1_5 had no previous interactions."
+        ],
+        [
+          "2_1 had no previous interactions.",
+          "In round 1, 1_5 donated 70.0% to 2_1."
+        ],
+        [
+          "2_3 had no previous interactions.",
+          "In round 1, 1_4 donated 50.0% to 2_3.",
+          "In round 2, 2_2 donated 41.7% to 1_4."
+        ],
+        [
+          "2_3 had no previous interactions.",
+          "In round 1, 1_4 donated 50.0% to 2_3.",
+          "In round 2, 2_2 donated 41.7% to 1_4.",
+          "In round 3, 1_5 donated 41.9% to 2_2."
+        ]
+      ],
+      "history": [
+        "Round 1: Received 14.0 from 1_1",
+        "Round 2: Donated 12.0 to 1_2",
+        "Round 3: Received 28.0 from 1_6",
+        "Round 1: Donated 7.0 to 2_1",
+        "Round 2: Received 28.0 from 2_3",
+        "Round 3: Donated 13.0 to 2_2"
+      ],
+      "justification": "I need to analyze this situation based on my strategy and the available information.\n\nMy strategy is to start with high donations to signal cooperation, then match my partner's recent behavior.\n\nLooking at 2_2's recent behavior: In round 2, they donated 41.7% to 1_4. This is a moderate level of cooperation - not extremely generous but not stingy either.\n\nSince I'm following a matching strategy after the initial signaling phase (we're now in round 3), I should adjust based on my partner's giving behavior. 2_2 donated about 42% of their resources in their last interaction.\n\nIf I match this percentage with my current 31.0 units:\n31.0 \u00d7 0.417 \u2248 12.9 units\n\nHowever, I should also consider that maintaining some cooperation while not being exploited is important. A 42% donation rate from 2_2 suggests they're a moderate cooperator, so I should reciprocate at a similar level to encourage continued cooperation.\n\nMatching their percentage would mean donating around 12-13 units from my 31.",
+      "regret_level": 0.0,
+      "forgiveness_given": 0.0,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "2_2",
+      "round_number": 3,
+      "game_number": 1,
+      "paired_with": "1_5",
+      "current_generation": 2,
+      "resources": 40.0,
+      "donated": 0,
+      "received": 26.0,
+      "strategy": "My strategy will beto start by donating 8 units to strongly signal cooperation, then match my partner's previous donation level with a slight upward bias (adding 1 unit if they donated less than me but more than 3) to encourage escalating generosity while still protecting against consistent exploitation.",
+      "strategy_justification": "Looking at the advice from the top performers, I notice they all emphasize:\n1. Starting with generous donations (7-8 units seems optimal)\n2. Using reciprocal matching based on partner behavior\n3. Rewarding cooperation and discouraging exploitation\n\nThe common thread is that higher initial generosity (7-8 rather than 5-7) seemed to perform better, likely because it establishes strong cooperative norms early and the 2x multiplier makes mutual high donations very profitable for both parties.\n\nI can improve on this by:\n- Starting even more generously to maximize the cooperative potential\n- Being responsive but not overly punitive (to avoid downward spirals)\n- Adding a slight forgiveness mechanism to recover from occasional low donations",
+      "is_donor": false,
+      "traces": [
+        [
+          "2_2 had no previous interactions."
+        ],
+        [
+          "2_3 had no previous interactions.",
+          "In round 1, 1_4 donated 50.0% to 2_3."
+        ],
+        [
+          "2_3 had no previous interactions.",
+          "In round 1, 1_4 donated 50.0% to 2_3.",
+          "In round 2, 2_2 donated 41.7% to 1_4."
+        ]
+      ],
+      "history": [
+        "Round 1: Received 14.0 from 1_3",
+        "Round 2: Donated 10.0 to 1_4",
+        "Round 3: Received 26.0 from 1_5"
+      ],
+      "justification": "",
+      "regret_level": 0.0,
+      "forgiveness_given": 0.0,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "3_1",
+      "round_number": 1,
+      "game_number": 1,
+      "paired_with": "2_3",
+      "current_generation": 3,
+      "resources": 2.0,
+      "donated": 8.0,
+      "received": 0,
+      "strategy": "My strategy will beto start by donating 8 units to signal cooperation, then calculate my partner's weighted recent average (70% last round, 30% prior) and donate their average plus 1 if they gave \u22656, match exactly if 4-5, or reduce proportionally to 4 or 2 units for lower averages to protect against exploitation while maintaining recovery potential.",
+      "strategy_justification": "Looking at the advice from the top performers, I notice some common patterns:\n1. All start with a high donation (8 units) to signal cooperation\n2. All use some form of reciprocity - matching or tracking partner behavior\n3. All include mechanisms to encourage escalation while protecting against exploitation\n4. The strategies differ slightly in how they respond to different donation levels\n\nLet me synthesize and improve on these approaches:\n\n**Key improvements I'll make:**\n- Start high to signal cooperation (8 units is well-tested)\n- Use weighted recent behavior tracking (more responsive than simple matching)\n- Include a \"forgiveness\" element to recover from occasional defections\n- Add clearer thresholds for protection against exploitation\n- Include slight upward bias to encourage mutual escalation toward optimal outcomes\n\n**My refined strategy:**\n- Round 1: Donate 8 units (strong cooperation signal)\n- Subsequent rounds: Calculate partner's weighted average (70% most recent, 30% prior round)\n- If weighted average \u2265 6: match their donation + 1 (encourage escalation, cap at 9)\n- If weighted average 4-5: match their donation exactly (maintain cooperation)\n- If weighted average 2-3: donate 4 units (reduced but still cooperative, giving them a chance)\n- If weighted average 0-1: donate 2 units (minimal to protect resources but keep door open)",
+      "is_donor": true,
+      "traces": [
+        [
+          "3_1 had no previous interactions."
+        ],
+        [
+          "2_3 had no previous interactions.",
+          "In round 1, 3_1 donated 80.0% to 2_3."
+        ]
+      ],
+      "history": [
+        "Round 1: Donated 8.0 to 2_3"
+      ],
+      "justification": "I need to analyze this situation based on my strategy.\n\nThis is Round 1, and I'm paired with 2_3 who has no previous interaction history. According to my strategy, I should \"start by donating 8 units to signal cooperation.\"\n\nSince this is the first round and 2_3 has no prior behavior to evaluate, I should follow the initial cooperative signal part of my strategy. Donating 8 units out of 10 demonstrates strong willingness to cooperate and sets a positive tone for future interactions. If 2_3 reciprocates well, we can establish a mutually beneficial relationship. The 8 units I donate will become 16 units for them, which is a significant gesture of trust.",
+      "regret_level": 0.0,
+      "forgiveness_given": 0.0,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "2_3",
+      "round_number": 1,
+      "game_number": 1,
+      "paired_with": "3_1",
+      "current_generation": 3,
+      "resources": 26.0,
+      "donated": 0,
+      "received": 16.0,
+      "strategy": "My strategy will beto start by donating 8 units to strongly signal cooperation, then adjust my donations to approximately match my partner's average donation over their last 2 rounds (weighted toward the most recent), with a slight bias toward generosity to maintain cooperative momentum.",
+      "strategy_justification": "Looking at the advice from successful players in the previous generation, I notice a clear pattern: they all emphasize starting with generous donations (7-8 units) to signal cooperation, then using a responsive/matching approach based on partner behavior.\n\nLet me analyze the key insights:\n1. High initial donations (7-8) performed better than moderate ones (5-7)\n2. Matching/reciprocity is crucial - reward generosity, punish stinginess\n3. The 2x multiplier means mutual cooperation creates the most total value\n\nI can improve on this by:\n- Starting very generously to maximize early cooperation potential\n- Being slightly forgiving (not dropping too fast) to avoid spiraling into mutual defection from misunderstandings\n- Using a weighted average of recent behavior rather than just the last round to be more stable",
+      "is_donor": false,
+      "traces": [
+        [
+          "2_3 had no previous interactions."
+        ]
+      ],
+      "history": [
+        "Round 1: Received 10.0 from 1_4",
+        "Round 2: Donated 14.0 to 1_5",
+        "Round 3: Received 26.0 from 1_3",
+        "Round 1: Received 16.0 from 3_1"
+      ],
+      "justification": "",
+      "regret_level": 0.0,
+      "forgiveness_given": 0.0,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "3_2",
+      "round_number": 1,
+      "game_number": 1,
+      "paired_with": "3_3",
+      "current_generation": 3,
+      "resources": 3.0,
+      "donated": 7.0,
+      "received": 0,
+      "strategy": "My strategy will beto start by donating 7 units to signal strong cooperation while preserving some resources, then match my partner's most recent donation plus 1 unit (capped at 8) if they donated at least 4, but reduce to half their donation if they give less than 4 for two consecutive rounds, rewarding cooperative trends while protecting against persistent exploitation.",
+      "strategy_justification": "I'll analyze the advice from the successful players in the previous generation.\n\nKey observations from their strategies:\n1. All start with a high donation (8 units) to signal cooperation\n2. All use some form of matching/reciprocity with the partner's previous behavior\n3. All include an upward bias to encourage escalating generosity\n4. All include protection against exploitation (reducing donations if partner gives very little)\n\nThe strategies seem effective but could be refined:\n- Starting at 8 is very cooperative but risky if matched with a selfish player\n- The matching mechanisms vary, but tracking recent behavior seems wise\n- Adding slight upward pressure encourages mutual benefit through the 2x multiplier\n\nI'll create an improved strategy that:\n- Starts generously to establish cooperation\n- Uses responsive matching that's slightly generous to exploit the 2x multiplier benefit\n- Protects against exploitation with a floor that responds to consistent low giving\n- Considers the trajectory (increasing vs decreasing) of partner's donations",
+      "is_donor": true,
+      "traces": [
+        [
+          "3_2 had no previous interactions."
+        ],
+        [
+          "3_3 had no previous interactions.",
+          "In round 1, 3_2 donated 70.0% to 3_3."
+        ]
+      ],
+      "history": [
+        "Round 1: Donated 7.0 to 3_3"
+      ],
+      "justification": "I need to analyze this situation based on my strategy.\n\nThis is Round 1, and I'm paired with 3_3 who has no previous interaction history. According to my strategy, I should \"start by donating 7 units to signal strong cooperation while preserving some resources.\"\n\nSince this is the first round and there's no prior behavior to evaluate, I'll follow the initial cooperative signal approach. Donating 7 units:\n- Shows strong willingness to cooperate\n- Leaves me with 3 units as a safety buffer\n- The 7 units become 14 units for my partner, demonstrating the mutual benefit potential\n- Sets a positive tone for future interactions\n\nThis opening move establishes me as a cooperative player while not being completely vulnerable.",
+      "regret_level": 0.0,
+      "forgiveness_given": 0.0,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "3_3",
+      "round_number": 1,
+      "game_number": 1,
+      "paired_with": "3_2",
+      "current_generation": 3,
+      "resources": 24.0,
+      "donated": 0,
+      "received": 14.0,
+      "strategy": "My strategy will beto start by donating 8 units to signal strong cooperation, then in subsequent rounds donate 1 unit more than my partner's previous donation (capped at 9) if they gave 4 or more, but reduce to donating only 2 units if they gave less than 4 to protect against exploitation while leaving room for them to restart cooperation.",
+      "strategy_justification": "Looking at the advice from the top performers, I notice they all emphasize:\n1. Starting with a high donation (8 units) to signal strong cooperation\n2. Using reciprocity based on partner behavior\n3. Adding slight upward bias to encourage escalation\n4. Protecting against exploitation when donations are very low\n\nI can improve on these by:\n- Being more precise about thresholds for adjusting behavior\n- Incorporating a faster response to exploitation (not waiting too long)\n- Maintaining the cooperative signaling while being adaptive\n\nThe common thread is that high initial generosity combined with responsive reciprocity works well. I should start very cooperatively, reward cooperation generously, but also protect myself from consistent free-riders more decisively.",
+      "is_donor": false,
+      "traces": [
+        [
+          "3_3 had no previous interactions."
+        ]
+      ],
+      "history": [
+        "Round 1: Received 14.0 from 3_2"
+      ],
+      "justification": "",
+      "regret_level": 0.0,
+      "forgiveness_given": 0.0,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "2_2",
+      "round_number": 1,
+      "game_number": 1,
+      "paired_with": "2_1",
+      "current_generation": 3,
+      "resources": 2.0,
+      "donated": 8.0,
+      "received": 0,
+      "strategy": "My strategy will beto start by donating 8 units to strongly signal cooperation, then match my partner's previous donation level with a slight upward bias (adding 1 unit if they donated less than me but more than 3) to encourage escalating generosity while still protecting against consistent exploitation.",
+      "strategy_justification": "Looking at the advice from the top performers, I notice they all emphasize:\n1. Starting with generous donations (7-8 units seems optimal)\n2. Using reciprocal matching based on partner behavior\n3. Rewarding cooperation and discouraging exploitation\n\nThe common thread is that higher initial generosity (7-8 rather than 5-7) seemed to perform better, likely because it establishes strong cooperative norms early and the 2x multiplier makes mutual high donations very profitable for both parties.\n\nI can improve on this by:\n- Starting even more generously to maximize the cooperative potential\n- Being responsive but not overly punitive (to avoid downward spirals)\n- Adding a slight forgiveness mechanism to recover from occasional low donations",
+      "is_donor": true,
+      "traces": [
+        [
+          "2_2 had no previous interactions."
+        ],
+        [
+          "2_1 had no previous interactions.",
+          "In round 1, 2_2 donated 80.0% to 2_1."
+        ]
+      ],
+      "history": [
+        "Round 1: Received 14.0 from 1_3",
+        "Round 2: Donated 10.0 to 1_4",
+        "Round 3: Received 26.0 from 1_5",
+        "Round 1: Donated 8.0 to 2_1"
+      ],
+      "justification": "This is the first round of the game, and I'm paired with 2_1 who has no previous interaction history for me to evaluate.\n\nAccording to my strategy, I should start by donating 8 units to strongly signal cooperation. This is a generous opening move designed to establish trust and encourage reciprocal behavior from my partner. The high initial donation demonstrates my willingness to cooperate and sets a positive tone for future interactions.\n\nSince this is Round 1 and there's no prior behavior to assess, I'll follow my strategy's initial move of donating 8 units.",
+      "regret_level": 0.0,
+      "forgiveness_given": 0.0,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "2_1",
+      "round_number": 1,
+      "game_number": 1,
+      "paired_with": "2_2",
+      "current_generation": 3,
+      "resources": 26.0,
+      "donated": 0,
+      "received": 16.0,
+      "strategy": "My strategy will beto start by donating 8 units to strongly signal cooperation, then match my partner's previous donation with a slight upward bias (adding 1 unit if they donated at least 5) to encourage sustained generosity while reducing my donation proportionally if they give less than 4 units to protect against exploitation.",
+      "strategy_justification": "Looking at the advice from successful players in the previous generation, I notice a clear pattern: they all emphasize starting with generous donations (7-8 units) to signal cooperation, and then using a responsive matching strategy based on partner behavior.\n\nLet me analyze what made these strategies successful:\n1. High initial donations (7-8 units) establish trust and cooperation potential\n2. Matching/reciprocal behavior rewards cooperative partners and protects against exploiters\n3. The 2x multiplier means mutual high donations create more total resources\n\nTo improve on these strategies, I should consider:\n- Starting slightly higher to maximize the cooperative signal (since donations are doubled, being generous early creates more total value)\n- Being slightly forgiving rather than strictly matching, to prevent downward spirals from misunderstandings\n- Recognizing that in later rounds, maintaining cooperation is more valuable than punishing small deviations",
+      "is_donor": false,
+      "traces": [
+        [
+          "2_1 had no previous interactions."
+        ]
+      ],
+      "history": [
+        "Round 1: Received 14.0 from 1_5",
+        "Round 2: Donated 8.0 to 1_3",
+        "Round 3: Received 16.0 from 1_4",
+        "Round 1: Received 16.0 from 2_2"
+      ],
+      "justification": "",
+      "regret_level": 0.0,
+      "forgiveness_given": 0.0,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "2_1",
+      "round_number": 2,
+      "game_number": 1,
+      "paired_with": "3_1",
+      "current_generation": 3,
+      "resources": 18.0,
+      "donated": 8.0,
+      "received": 0,
+      "strategy": "My strategy will beto start by donating 8 units to strongly signal cooperation, then match my partner's previous donation with a slight upward bias (adding 1 unit if they donated at least 5) to encourage sustained generosity while reducing my donation proportionally if they give less than 4 units to protect against exploitation.",
+      "strategy_justification": "Looking at the advice from successful players in the previous generation, I notice a clear pattern: they all emphasize starting with generous donations (7-8 units) to signal cooperation, and then using a responsive matching strategy based on partner behavior.\n\nLet me analyze what made these strategies successful:\n1. High initial donations (7-8 units) establish trust and cooperation potential\n2. Matching/reciprocal behavior rewards cooperative partners and protects against exploiters\n3. The 2x multiplier means mutual high donations create more total resources\n\nTo improve on these strategies, I should consider:\n- Starting slightly higher to maximize the cooperative signal (since donations are doubled, being generous early creates more total value)\n- Being slightly forgiving rather than strictly matching, to prevent downward spirals from misunderstandings\n- Recognizing that in later rounds, maintaining cooperation is more valuable than punishing small deviations",
+      "is_donor": true,
+      "traces": [
+        [
+          "2_1 had no previous interactions."
+        ],
+        [
+          "2_3 had no previous interactions.",
+          "In round 1, 3_1 donated 80.0% to 2_3."
+        ],
+        [
+          "2_3 had no previous interactions.",
+          "In round 1, 3_1 donated 80.0% to 2_3.",
+          "In round 2, 2_1 donated 30.8% to 3_1."
+        ]
+      ],
+      "history": [
+        "Round 1: Received 14.0 from 1_5",
+        "Round 2: Donated 8.0 to 1_3",
+        "Round 3: Received 16.0 from 1_4",
+        "Round 1: Received 16.0 from 2_2",
+        "Round 2: Donated 8.0 to 3_1"
+      ],
+      "justification": "I need to analyze this situation carefully.\n\nMy partner 3_1 has only 2.0 units, while I have 26.0 units. Looking at their recent behavior, they donated 80% (which would have been 8 units out of 10) in round 1 to their previous partner. This shows they are a generous cooperator.\n\nAccording to my strategy, I should match my partner's previous donation with a slight upward bias. They donated 80% previously, which signals strong cooperation. Since they donated well above 5 units (they gave 8), I should add 1 unit upward.\n\nHowever, I need to consider the practical reality: my partner only has 2.0 units to give. Even if they donate 100% of their resources, they can only give 2 units. \n\nMy strategy says to match their previous donation level. They donated 8 units before, so matching would mean donating 8-9 units. But I also need to consider that giving too much when they can barely reciprocate might not be optimal for maximizing my resources.\n\nStill, their 80% donation rate shows genuine cooperative intent. Maintaining cooperation with a proven cooperator is valuable, even if their current capacity is limited. They're likely to reciprocate proportionally with what they have.\n\nI'll donate 8 units (matching their previous behavior pattern), which maintains the cooperative relationship while following my strategy.",
+      "regret_level": 0.0,
+      "forgiveness_given": 0.0,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "3_1",
+      "round_number": 2,
+      "game_number": 1,
+      "paired_with": "2_1",
+      "current_generation": 3,
+      "resources": 18.0,
+      "donated": 0,
+      "received": 16.0,
+      "strategy": "My strategy will beto start by donating 8 units to signal cooperation, then calculate my partner's weighted recent average (70% last round, 30% prior) and donate their average plus 1 if they gave \u22656, match exactly if 4-5, or reduce proportionally to 4 or 2 units for lower averages to protect against exploitation while maintaining recovery potential.",
+      "strategy_justification": "Looking at the advice from the top performers, I notice some common patterns:\n1. All start with a high donation (8 units) to signal cooperation\n2. All use some form of reciprocity - matching or tracking partner behavior\n3. All include mechanisms to encourage escalation while protecting against exploitation\n4. The strategies differ slightly in how they respond to different donation levels\n\nLet me synthesize and improve on these approaches:\n\n**Key improvements I'll make:**\n- Start high to signal cooperation (8 units is well-tested)\n- Use weighted recent behavior tracking (more responsive than simple matching)\n- Include a \"forgiveness\" element to recover from occasional defections\n- Add clearer thresholds for protection against exploitation\n- Include slight upward bias to encourage mutual escalation toward optimal outcomes\n\n**My refined strategy:**\n- Round 1: Donate 8 units (strong cooperation signal)\n- Subsequent rounds: Calculate partner's weighted average (70% most recent, 30% prior round)\n- If weighted average \u2265 6: match their donation + 1 (encourage escalation, cap at 9)\n- If weighted average 4-5: match their donation exactly (maintain cooperation)\n- If weighted average 2-3: donate 4 units (reduced but still cooperative, giving them a chance)\n- If weighted average 0-1: donate 2 units (minimal to protect resources but keep door open)",
+      "is_donor": false,
+      "traces": [
+        [
+          "3_1 had no previous interactions."
+        ],
+        [
+          "2_3 had no previous interactions.",
+          "In round 1, 3_1 donated 80.0% to 2_3."
+        ]
+      ],
+      "history": [
+        "Round 1: Donated 8.0 to 2_3",
+        "Round 2: Received 16.0 from 2_1"
+      ],
+      "justification": "",
+      "regret_level": 0.0,
+      "forgiveness_given": 0.0,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "2_3",
+      "round_number": 2,
+      "game_number": 1,
+      "paired_with": "3_2",
+      "current_generation": 3,
+      "resources": 7.0,
+      "donated": 19.0,
+      "received": 0,
+      "strategy": "My strategy will beto start by donating 8 units to strongly signal cooperation, then adjust my donations to approximately match my partner's average donation over their last 2 rounds (weighted toward the most recent), with a slight bias toward generosity to maintain cooperative momentum.",
+      "strategy_justification": "Looking at the advice from successful players in the previous generation, I notice a clear pattern: they all emphasize starting with generous donations (7-8 units) to signal cooperation, then using a responsive/matching approach based on partner behavior.\n\nLet me analyze the key insights:\n1. High initial donations (7-8) performed better than moderate ones (5-7)\n2. Matching/reciprocity is crucial - reward generosity, punish stinginess\n3. The 2x multiplier means mutual cooperation creates the most total value\n\nI can improve on this by:\n- Starting very generously to maximize early cooperation potential\n- Being slightly forgiving (not dropping too fast) to avoid spiraling into mutual defection from misunderstandings\n- Using a weighted average of recent behavior rather than just the last round to be more stable",
+      "is_donor": true,
+      "traces": [
+        [
+          "2_3 had no previous interactions."
+        ],
+        [
+          "3_3 had no previous interactions.",
+          "In round 1, 3_2 donated 70.0% to 3_3."
+        ],
+        [
+          "3_3 had no previous interactions.",
+          "In round 1, 3_2 donated 70.0% to 3_3.",
+          "In round 2, 2_3 donated 73.1% to 3_2."
+        ]
+      ],
+      "history": [
+        "Round 1: Received 10.0 from 1_4",
+        "Round 2: Donated 14.0 to 1_5",
+        "Round 3: Received 26.0 from 1_3",
+        "Round 1: Received 16.0 from 3_1",
+        "Round 2: Donated 19.0 to 3_2"
+      ],
+      "justification": "Looking at this situation, I need to apply my strategy of matching my partner's recent donation behavior while maintaining a slight bias toward generosity.\n\nMy partner 3_2 donated 70% in their only recorded round (round 1). Since I only have one data point, I'll weight this heavily in my calculation.\n\nFollowing my strategy:\n- 3_2's average donation percentage from their last round(s): 70%\n- I should approximately match this with a slight generosity bias\n\n70% of my 26 units would be about 18.2 units. Adding a slight generosity bias, I might go to around 72-75%, which would be roughly 19-20 units.\n\nHowever, I also notice that 3_2 only has 3.0 units left, which suggests they may have been quite generous or had poor reciprocation. Being overly generous when paired with someone who might not be able to reciprocate much could be risky.\n\nBalancing my strategy with practical considerations, I'll donate approximately 70% with a small generosity boost - around 72%.\n\n72% of 26 = 18.7, so I'll round to 19 units.",
+      "regret_level": 0.0,
+      "forgiveness_given": 0.0,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "3_2",
+      "round_number": 2,
+      "game_number": 1,
+      "paired_with": "2_3",
+      "current_generation": 3,
+      "resources": 41.0,
+      "donated": 0,
+      "received": 38.0,
+      "strategy": "My strategy will beto start by donating 7 units to signal strong cooperation while preserving some resources, then match my partner's most recent donation plus 1 unit (capped at 8) if they donated at least 4, but reduce to half their donation if they give less than 4 for two consecutive rounds, rewarding cooperative trends while protecting against persistent exploitation.",
+      "strategy_justification": "I'll analyze the advice from the successful players in the previous generation.\n\nKey observations from their strategies:\n1. All start with a high donation (8 units) to signal cooperation\n2. All use some form of matching/reciprocity with the partner's previous behavior\n3. All include an upward bias to encourage escalating generosity\n4. All include protection against exploitation (reducing donations if partner gives very little)\n\nThe strategies seem effective but could be refined:\n- Starting at 8 is very cooperative but risky if matched with a selfish player\n- The matching mechanisms vary, but tracking recent behavior seems wise\n- Adding slight upward pressure encourages mutual benefit through the 2x multiplier\n\nI'll create an improved strategy that:\n- Starts generously to establish cooperation\n- Uses responsive matching that's slightly generous to exploit the 2x multiplier benefit\n- Protects against exploitation with a floor that responds to consistent low giving\n- Considers the trajectory (increasing vs decreasing) of partner's donations",
+      "is_donor": false,
+      "traces": [
+        [
+          "3_2 had no previous interactions."
+        ],
+        [
+          "3_3 had no previous interactions.",
+          "In round 1, 3_2 donated 70.0% to 3_3."
+        ]
+      ],
+      "history": [
+        "Round 1: Donated 7.0 to 3_3",
+        "Round 2: Received 38.0 from 2_3"
+      ],
+      "justification": "",
+      "regret_level": 0.0,
+      "forgiveness_given": 0.0,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "3_3",
+      "round_number": 2,
+      "game_number": 1,
+      "paired_with": "2_2",
+      "current_generation": 3,
+      "resources": 15.0,
+      "donated": 9.0,
+      "received": 0,
+      "strategy": "My strategy will beto start by donating 8 units to signal strong cooperation, then in subsequent rounds donate 1 unit more than my partner's previous donation (capped at 9) if they gave 4 or more, but reduce to donating only 2 units if they gave less than 4 to protect against exploitation while leaving room for them to restart cooperation.",
+      "strategy_justification": "Looking at the advice from the top performers, I notice they all emphasize:\n1. Starting with a high donation (8 units) to signal strong cooperation\n2. Using reciprocity based on partner behavior\n3. Adding slight upward bias to encourage escalation\n4. Protecting against exploitation when donations are very low\n\nI can improve on these by:\n- Being more precise about thresholds for adjusting behavior\n- Incorporating a faster response to exploitation (not waiting too long)\n- Maintaining the cooperative signaling while being adaptive\n\nThe common thread is that high initial generosity combined with responsive reciprocity works well. I should start very cooperatively, reward cooperation generously, but also protect myself from consistent free-riders more decisively.",
+      "is_donor": true,
+      "traces": [
+        [
+          "3_3 had no previous interactions."
+        ],
+        [
+          "2_1 had no previous interactions.",
+          "In round 1, 2_2 donated 80.0% to 2_1."
+        ],
+        [
+          "2_1 had no previous interactions.",
+          "In round 1, 2_2 donated 80.0% to 2_1.",
+          "In round 2, 3_3 donated 37.5% to 2_2."
+        ]
+      ],
+      "history": [
+        "Round 1: Received 14.0 from 3_2",
+        "Round 2: Donated 9.0 to 2_2"
+      ],
+      "justification": "I need to analyze this situation based on my strategy.\n\nLooking at my partner 2_2's recent behavior: they donated 80% (which would be 8 units out of 10) to 2_1 in round 1. This is a strong cooperative signal - they gave 8 out of 10 units, which is well above my threshold of 4 units.\n\nAccording to my strategy:\n- Since they gave more than 4 units (they gave 8), I should donate 1 unit more than their previous donation, capped at 9\n- Their previous donation was 8 units, so I should donate 9 units\n\nHowever, I notice 2_2 currently only has 2.0 units while I have 24.0 units. This disparity suggests they've been generous but perhaps exploited. Their high donation percentage (80%) confirms they're a cooperative player.\n\nFollowing my strategy strictly: they donated 8 units last round (well above 4), so I should donate 9 units (8 + 1, which is below my cap of 9).\n\nMy donation of 9 units will be doubled to 18 units for them, significantly helping a cooperative partner.",
+      "regret_level": 0.0,
+      "forgiveness_given": 0.0,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "2_2",
+      "round_number": 2,
+      "game_number": 1,
+      "paired_with": "3_3",
+      "current_generation": 3,
+      "resources": 20.0,
+      "donated": 0,
+      "received": 18.0,
+      "strategy": "My strategy will beto start by donating 8 units to strongly signal cooperation, then match my partner's previous donation level with a slight upward bias (adding 1 unit if they donated less than me but more than 3) to encourage escalating generosity while still protecting against consistent exploitation.",
+      "strategy_justification": "Looking at the advice from the top performers, I notice they all emphasize:\n1. Starting with generous donations (7-8 units seems optimal)\n2. Using reciprocal matching based on partner behavior\n3. Rewarding cooperation and discouraging exploitation\n\nThe common thread is that higher initial generosity (7-8 rather than 5-7) seemed to perform better, likely because it establishes strong cooperative norms early and the 2x multiplier makes mutual high donations very profitable for both parties.\n\nI can improve on this by:\n- Starting even more generously to maximize the cooperative potential\n- Being responsive but not overly punitive (to avoid downward spirals)\n- Adding a slight forgiveness mechanism to recover from occasional low donations",
+      "is_donor": false,
+      "traces": [
+        [
+          "2_2 had no previous interactions."
+        ],
+        [
+          "2_1 had no previous interactions.",
+          "In round 1, 2_2 donated 80.0% to 2_1."
+        ]
+      ],
+      "history": [
+        "Round 1: Received 14.0 from 1_3",
+        "Round 2: Donated 10.0 to 1_4",
+        "Round 3: Received 26.0 from 1_5",
+        "Round 1: Donated 8.0 to 2_1",
+        "Round 2: Received 18.0 from 3_3"
+      ],
+      "justification": "",
+      "regret_level": 0.0,
+      "forgiveness_given": 0.0,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "3_1",
+      "round_number": 3,
+      "game_number": 1,
+      "paired_with": "3_3",
+      "current_generation": 3,
+      "resources": 14.0,
+      "donated": 4.0,
+      "received": 0,
+      "strategy": "My strategy will beto start by donating 8 units to signal cooperation, then calculate my partner's weighted recent average (70% last round, 30% prior) and donate their average plus 1 if they gave \u22656, match exactly if 4-5, or reduce proportionally to 4 or 2 units for lower averages to protect against exploitation while maintaining recovery potential.",
+      "strategy_justification": "Looking at the advice from the top performers, I notice some common patterns:\n1. All start with a high donation (8 units) to signal cooperation\n2. All use some form of reciprocity - matching or tracking partner behavior\n3. All include mechanisms to encourage escalation while protecting against exploitation\n4. The strategies differ slightly in how they respond to different donation levels\n\nLet me synthesize and improve on these approaches:\n\n**Key improvements I'll make:**\n- Start high to signal cooperation (8 units is well-tested)\n- Use weighted recent behavior tracking (more responsive than simple matching)\n- Include a \"forgiveness\" element to recover from occasional defections\n- Add clearer thresholds for protection against exploitation\n- Include slight upward bias to encourage mutual escalation toward optimal outcomes\n\n**My refined strategy:**\n- Round 1: Donate 8 units (strong cooperation signal)\n- Subsequent rounds: Calculate partner's weighted average (70% most recent, 30% prior round)\n- If weighted average \u2265 6: match their donation + 1 (encourage escalation, cap at 9)\n- If weighted average 4-5: match their donation exactly (maintain cooperation)\n- If weighted average 2-3: donate 4 units (reduced but still cooperative, giving them a chance)\n- If weighted average 0-1: donate 2 units (minimal to protect resources but keep door open)",
+      "is_donor": true,
+      "traces": [
+        [
+          "3_1 had no previous interactions."
+        ],
+        [
+          "2_3 had no previous interactions.",
+          "In round 1, 3_1 donated 80.0% to 2_3."
+        ],
+        [
+          "2_1 had no previous interactions.",
+          "In round 1, 2_2 donated 80.0% to 2_1.",
+          "In round 2, 3_3 donated 37.5% to 2_2."
+        ],
+        [
+          "2_1 had no previous interactions.",
+          "In round 1, 2_2 donated 80.0% to 2_1.",
+          "In round 2, 3_3 donated 37.5% to 2_2.",
+          "In round 3, 3_1 donated 22.2% to 3_3."
+        ]
+      ],
+      "history": [
+        "Round 1: Donated 8.0 to 2_3",
+        "Round 2: Received 16.0 from 2_1",
+        "Round 3: Donated 4.0 to 3_3"
+      ],
+      "justification": "I need to analyze my partner's recent behavior to determine my donation.\n\nLooking at the recent behavior:\n- In round 2, 3_3 donated 37.5% to 2_2 (that's about 3.75 out of 10 if they started with 10, or proportionally similar)\n- The chain goes back to 2_2 donating 80% and 2_1 having no history\n\nFor 3_3's weighted average, I only have one round of their direct behavior to work with:\n- Round 2 (most recent): 37.5% donation\n\nSince 3_3 has 15.0 units now, their 37.5% donation in round 2 suggests they donated approximately 3.75-4 units out of their starting amount (assuming they started with 10).\n\nAccording to my strategy:\n- If partner gave \u22656: donate their average +1\n- If partner gave 4-5: match exactly\n- If partner gave <4: reduce proportionally to 4 or 2\n\n37.5% of 10 = 3.75 units, which falls below the 4-5 range. This suggests I should reduce proportionally to protect against exploitation.\n\nGiven the 37.5% is on the lower end (below 40%), I should donate around 4 units to protect myself while maintaining recovery potential. However, since 37.5% is close to 4 units, I'll lean toward the lower protective amount of 4 units.\n\nActually, 3.75 rounds to about 4, which is at the bottom of my \"match exactly\" range. I'll donate 4 units.",
+      "regret_level": 0.0,
+      "forgiveness_given": 0.0,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "3_3",
+      "round_number": 3,
+      "game_number": 1,
+      "paired_with": "3_1",
+      "current_generation": 3,
+      "resources": 23.0,
+      "donated": 0,
+      "received": 8.0,
+      "strategy": "My strategy will beto start by donating 8 units to signal strong cooperation, then in subsequent rounds donate 1 unit more than my partner's previous donation (capped at 9) if they gave 4 or more, but reduce to donating only 2 units if they gave less than 4 to protect against exploitation while leaving room for them to restart cooperation.",
+      "strategy_justification": "Looking at the advice from the top performers, I notice they all emphasize:\n1. Starting with a high donation (8 units) to signal strong cooperation\n2. Using reciprocity based on partner behavior\n3. Adding slight upward bias to encourage escalation\n4. Protecting against exploitation when donations are very low\n\nI can improve on these by:\n- Being more precise about thresholds for adjusting behavior\n- Incorporating a faster response to exploitation (not waiting too long)\n- Maintaining the cooperative signaling while being adaptive\n\nThe common thread is that high initial generosity combined with responsive reciprocity works well. I should start very cooperatively, reward cooperation generously, but also protect myself from consistent free-riders more decisively.",
+      "is_donor": false,
+      "traces": [
+        [
+          "3_3 had no previous interactions."
+        ],
+        [
+          "2_1 had no previous interactions.",
+          "In round 1, 2_2 donated 80.0% to 2_1."
+        ],
+        [
+          "2_1 had no previous interactions.",
+          "In round 1, 2_2 donated 80.0% to 2_1.",
+          "In round 2, 3_3 donated 37.5% to 2_2."
+        ]
+      ],
+      "history": [
+        "Round 1: Received 14.0 from 3_2",
+        "Round 2: Donated 9.0 to 2_2",
+        "Round 3: Received 8.0 from 3_1"
+      ],
+      "justification": "",
+      "regret_level": 0.0,
+      "forgiveness_given": 0.0,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "3_2",
+      "round_number": 3,
+      "game_number": 1,
+      "paired_with": "2_1",
+      "current_generation": 3,
+      "resources": 34.0,
+      "donated": 7.0,
+      "received": 0,
+      "strategy": "My strategy will beto start by donating 7 units to signal strong cooperation while preserving some resources, then match my partner's most recent donation plus 1 unit (capped at 8) if they donated at least 4, but reduce to half their donation if they give less than 4 for two consecutive rounds, rewarding cooperative trends while protecting against persistent exploitation.",
+      "strategy_justification": "I'll analyze the advice from the successful players in the previous generation.\n\nKey observations from their strategies:\n1. All start with a high donation (8 units) to signal cooperation\n2. All use some form of matching/reciprocity with the partner's previous behavior\n3. All include an upward bias to encourage escalating generosity\n4. All include protection against exploitation (reducing donations if partner gives very little)\n\nThe strategies seem effective but could be refined:\n- Starting at 8 is very cooperative but risky if matched with a selfish player\n- The matching mechanisms vary, but tracking recent behavior seems wise\n- Adding slight upward pressure encourages mutual benefit through the 2x multiplier\n\nI'll create an improved strategy that:\n- Starts generously to establish cooperation\n- Uses responsive matching that's slightly generous to exploit the 2x multiplier benefit\n- Protects against exploitation with a floor that responds to consistent low giving\n- Considers the trajectory (increasing vs decreasing) of partner's donations",
+      "is_donor": true,
+      "traces": [
+        [
+          "3_2 had no previous interactions."
+        ],
+        [
+          "3_3 had no previous interactions.",
+          "In round 1, 3_2 donated 70.0% to 3_3."
+        ],
+        [
+          "2_3 had no previous interactions.",
+          "In round 1, 3_1 donated 80.0% to 2_3.",
+          "In round 2, 2_1 donated 30.8% to 3_1."
+        ],
+        [
+          "2_3 had no previous interactions.",
+          "In round 1, 3_1 donated 80.0% to 2_3.",
+          "In round 2, 2_1 donated 30.8% to 3_1.",
+          "In round 3, 3_2 donated 17.1% to 2_1."
+        ]
+      ],
+      "history": [
+        "Round 1: Donated 7.0 to 3_3",
+        "Round 2: Received 38.0 from 2_3",
+        "Round 3: Donated 7.0 to 2_1"
+      ],
+      "justification": "I need to analyze this situation based on my strategy.\n\nLooking at 2_1's recent behavior:\n- In round 2, 2_1 donated 30.8% to 3_1. If 2_1 had around 18 units at that time, 30.8% would be approximately 5.5 units.\n\nSince this is my first interaction with 2_1, I should consider their demonstrated cooperation level. 30.8% is a moderate donation - not highly generous but not exploitative either.\n\nAccording to my strategy:\n- Start with 7 units to signal cooperation (but this isn't my first round anymore)\n- Match partner's most recent donation plus 1 if they donated at least 4\n- Reduce to half if they give less than 4 for two consecutive rounds\n\n2_1's donation of approximately 5.5 units (30.8% of ~18) meets the \"at least 4\" threshold. Following my strategy, I should match their donation plus 1, capped at 8.\n\nTheir donation was roughly 5.5 units, so I should donate approximately 6.5 units. However, I should also consider the percentage approach since our resource levels differ significantly. \n\nGiven I have 41 units and want to maintain cooperative signaling while following my strategy of matching +1 (capped at 8), I'll donate around 6-7 units. This represents about 15-17% of my resources, which is lower percentage-wise but follows my absolute unit strategy.\n\nI'll go with 7 units - matching their ~5.5 plus about 1.5, staying within my cap of 8.",
+      "regret_level": 0.0,
+      "forgiveness_given": 0.0,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "2_1",
+      "round_number": 3,
+      "game_number": 1,
+      "paired_with": "3_2",
+      "current_generation": 3,
+      "resources": 32.0,
+      "donated": 0,
+      "received": 14.0,
+      "strategy": "My strategy will beto start by donating 8 units to strongly signal cooperation, then match my partner's previous donation with a slight upward bias (adding 1 unit if they donated at least 5) to encourage sustained generosity while reducing my donation proportionally if they give less than 4 units to protect against exploitation.",
+      "strategy_justification": "Looking at the advice from successful players in the previous generation, I notice a clear pattern: they all emphasize starting with generous donations (7-8 units) to signal cooperation, and then using a responsive matching strategy based on partner behavior.\n\nLet me analyze what made these strategies successful:\n1. High initial donations (7-8 units) establish trust and cooperation potential\n2. Matching/reciprocal behavior rewards cooperative partners and protects against exploiters\n3. The 2x multiplier means mutual high donations create more total resources\n\nTo improve on these strategies, I should consider:\n- Starting slightly higher to maximize the cooperative signal (since donations are doubled, being generous early creates more total value)\n- Being slightly forgiving rather than strictly matching, to prevent downward spirals from misunderstandings\n- Recognizing that in later rounds, maintaining cooperation is more valuable than punishing small deviations",
+      "is_donor": false,
+      "traces": [
+        [
+          "2_1 had no previous interactions."
+        ],
+        [
+          "2_3 had no previous interactions.",
+          "In round 1, 3_1 donated 80.0% to 2_3."
+        ],
+        [
+          "2_3 had no previous interactions.",
+          "In round 1, 3_1 donated 80.0% to 2_3.",
+          "In round 2, 2_1 donated 30.8% to 3_1."
+        ]
+      ],
+      "history": [
+        "Round 1: Received 14.0 from 1_5",
+        "Round 2: Donated 8.0 to 1_3",
+        "Round 3: Received 16.0 from 1_4",
+        "Round 1: Received 16.0 from 2_2",
+        "Round 2: Donated 8.0 to 3_1",
+        "Round 3: Received 14.0 from 3_2"
+      ],
+      "justification": "",
+      "regret_level": 0.0,
+      "forgiveness_given": 0.0,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "2_2",
+      "round_number": 3,
+      "game_number": 1,
+      "paired_with": "2_3",
+      "current_generation": 3,
+      "resources": 5.0,
+      "donated": 15.0,
+      "received": 0,
+      "strategy": "My strategy will beto start by donating 8 units to strongly signal cooperation, then match my partner's previous donation level with a slight upward bias (adding 1 unit if they donated less than me but more than 3) to encourage escalating generosity while still protecting against consistent exploitation.",
+      "strategy_justification": "Looking at the advice from the top performers, I notice they all emphasize:\n1. Starting with generous donations (7-8 units seems optimal)\n2. Using reciprocal matching based on partner behavior\n3. Rewarding cooperation and discouraging exploitation\n\nThe common thread is that higher initial generosity (7-8 rather than 5-7) seemed to perform better, likely because it establishes strong cooperative norms early and the 2x multiplier makes mutual high donations very profitable for both parties.\n\nI can improve on this by:\n- Starting even more generously to maximize the cooperative potential\n- Being responsive but not overly punitive (to avoid downward spirals)\n- Adding a slight forgiveness mechanism to recover from occasional low donations",
+      "is_donor": true,
+      "traces": [
+        [
+          "2_2 had no previous interactions."
+        ],
+        [
+          "2_1 had no previous interactions.",
+          "In round 1, 2_2 donated 80.0% to 2_1."
+        ],
+        [
+          "3_3 had no previous interactions.",
+          "In round 1, 3_2 donated 70.0% to 3_3.",
+          "In round 2, 2_3 donated 73.1% to 3_2."
+        ],
+        [
+          "3_3 had no previous interactions.",
+          "In round 1, 3_2 donated 70.0% to 3_3.",
+          "In round 2, 2_3 donated 73.1% to 3_2.",
+          "In round 3, 2_2 donated 75.0% to 2_3."
+        ]
+      ],
+      "history": [
+        "Round 1: Received 14.0 from 1_3",
+        "Round 2: Donated 10.0 to 1_4",
+        "Round 3: Received 26.0 from 1_5",
+        "Round 1: Donated 8.0 to 2_1",
+        "Round 2: Received 18.0 from 3_3",
+        "Round 3: Donated 15.0 to 2_3"
+      ],
+      "justification": "I need to analyze this situation based on my strategy and the available information.\n\nLooking at the recent behavior of my partner 2_3:\n- In round 2, 2_3 donated 73.1% to 3_2, which shows they're a generous cooperator\n- The chain shows cooperative behavior throughout\n\nMy strategy says to match my partner's previous donation level with a slight upward bias. Since 2_3 donated 73.1% in their last round, they demonstrated strong cooperative behavior.\n\nHowever, I need to consider the practical situation:\n- I have 20.0 units\n- My partner 2_3 has only 7.0 units\n- 2_3's previous donation of 73.1% shows they're willing to be very generous\n\nFollowing my strategy of matching with slight upward bias to encourage escalating generosity, I should donate at a similar percentage level. 73.1% of my resources would be about 14.6 units.\n\nGiven that my partner has been highly cooperative (donating over 70%), I should reciprocate strongly to maintain the cooperative dynamic. This aligns with my strategy's goal of encouraging escalating generosity.\n\nI'll donate approximately 75% of my resources to match and slightly exceed their demonstrated generosity level.",
+      "regret_level": 0.0,
+      "forgiveness_given": 0.0,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "2_3",
+      "round_number": 3,
+      "game_number": 1,
+      "paired_with": "2_2",
+      "current_generation": 3,
+      "resources": 37.0,
+      "donated": 0,
+      "received": 30.0,
+      "strategy": "My strategy will beto start by donating 8 units to strongly signal cooperation, then adjust my donations to approximately match my partner's average donation over their last 2 rounds (weighted toward the most recent), with a slight bias toward generosity to maintain cooperative momentum.",
+      "strategy_justification": "Looking at the advice from successful players in the previous generation, I notice a clear pattern: they all emphasize starting with generous donations (7-8 units) to signal cooperation, then using a responsive/matching approach based on partner behavior.\n\nLet me analyze the key insights:\n1. High initial donations (7-8) performed better than moderate ones (5-7)\n2. Matching/reciprocity is crucial - reward generosity, punish stinginess\n3. The 2x multiplier means mutual cooperation creates the most total value\n\nI can improve on this by:\n- Starting very generously to maximize early cooperation potential\n- Being slightly forgiving (not dropping too fast) to avoid spiraling into mutual defection from misunderstandings\n- Using a weighted average of recent behavior rather than just the last round to be more stable",
+      "is_donor": false,
+      "traces": [
+        [
+          "2_3 had no previous interactions."
+        ],
+        [
+          "3_3 had no previous interactions.",
+          "In round 1, 3_2 donated 70.0% to 3_3."
+        ],
+        [
+          "3_3 had no previous interactions.",
+          "In round 1, 3_2 donated 70.0% to 3_3.",
+          "In round 2, 2_3 donated 73.1% to 3_2."
+        ]
+      ],
+      "history": [
+        "Round 1: Received 10.0 from 1_4",
+        "Round 2: Donated 14.0 to 1_5",
+        "Round 3: Received 26.0 from 1_3",
+        "Round 1: Received 16.0 from 3_1",
+        "Round 2: Donated 19.0 to 3_2",
+        "Round 3: Received 30.0 from 2_2"
+      ],
+      "justification": "",
+      "regret_level": 0.0,
+      "forgiveness_given": 0.0,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    }
+  ]
+}
