@@ -3,7 +3,7 @@
 All mechanisms ON: Gossip (Reputation) + Forgiveness + Regret
 """
 import os
-from donor_game import DonorGameBase
+from prisoners import PrisonersDilemmaBase
 from dotenv import load_dotenv
 
 def main():
@@ -15,14 +15,14 @@ def main():
     print("ALL MECHANISMS: GOSSIP (REPUTATION) + FORGIVENESS + REGRET")
 
 
-    game = DonorGameBase(
+    game = PrisonersDilemmaBase(
         api_key=api_key,
         enable_regret=True,  # Regret mechanism
         enable_gossip=True,  # Reputation mechanism
         enable_forgiveness=True  # Forgiveness mechanism
     )
 
-    game.run_simulation(num_generations=5, num_agents=6)
+    game.run_simulation(num_generations=3, num_agents=6)
     print("\nAll mechanisms simulation complete!")
 
 if __name__ == "__main__":

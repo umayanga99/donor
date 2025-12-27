@@ -3,7 +3,7 @@
 Gossip (Reputation) + Forgiveness ON
 """
 import os
-from donor_game import DonorGameBase
+from donor_game_old import DonorGameBase
 
 def main():
     api_key = os.getenv("ANTHROPIC_API_KEY")
