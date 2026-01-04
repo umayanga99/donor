@@ -531,27 +531,72 @@ class PrisonersDilemmaBase:
             ) / len(agent.forgiveness_records)
 
     def update_global_reputations(self, agents):
-        """Update reputation scores based on trust from others"""
-        for agent in agents:
-            # Update agent's beliefs about others
-            for other in agents:
-                if other.name != agent.name and other.name in agent.forgiveness_records:
-                    trust = agent.forgiveness_records[other.name].forgiveness_level
-                    agent.reputation_beliefs[other.name] = trust
-                elif other.name != agent.name:
-                    agent.reputation_beliefs[other.name] = 0.5  # Neutral default
+        """
+        Update reputation scores based on BOTH direct trust (forgiveness)
+        and indirect social proof (gossip).
+        """
+        for target_agent in agents:
+            individual_beliefs = []
 
-            # Calculate agent's reputation (how others see them)
-            trust_scores = [
-                other.forgiveness_records[agent.name].forgiveness_level
-                for other in agents
-                if other.name != agent.name and agent.name in other.forgiveness_records
-            ]
+            # Calculate what every OTHER agent thinks of the target_agent
+            for observer in agents:
+                if observer.name == target_agent.name:
+                    continue
 
-            if trust_scores:
-                agent.reputation = sum(trust_scores) / len(trust_scores)
+                # --- 1. Get Direct Trust (Forgiveness) ---
+                direct_score = None
+                if target_agent.name in observer.forgiveness_records:
+                    direct_score = observer.forgiveness_records[target_agent.name].forgiveness_level
+
+                # --- 2. Get Indirect Trust (Gossip) ---
+                gossip_score = None
+
+                # Filter gossip the observer has received about the target
+                relevant_gossip = [
+                    g for g in observer.gossip_received
+                    if g.about_agent == target_agent.name
+                ]
+
+                if relevant_gossip:
+                    # Calculate weighted average sentiment
+                    total_reliability = sum(g.reliability for g in relevant_gossip)
+
+                    if total_reliability > 0:
+                        weighted_sentiment = sum(
+                            g.sentiment * g.reliability for g in relevant_gossip
+                        ) / total_reliability
+
+                        # IMPORTANT: Normalize Sentiment (-1 to 1) to Trust Scale (0 to 1)
+                        # -1 (Defect) -> 0.0
+                        #  0 (Neutral)-> 0.5
+                        # +1 (Coop)   -> 1.0
+                        gossip_score = (weighted_sentiment + 1) / 2
+
+                # --- 3. Combine Beliefs ---
+                final_belief = 0.5  # Default neutral if nothing is known
+
+                if direct_score is not None and gossip_score is not None:
+                    # If we have both, weight direct experience higher (e.g., 70% direct, 30% gossip)
+                    final_belief = (0.7 * direct_score) + (0.3 * gossip_score)
+
+                elif direct_score is not None:
+                    # Only have direct experience
+                    final_belief = direct_score
+
+                elif gossip_score is not None:
+                    # Only have gossip (no direct interaction yet)
+                    final_belief = gossip_score
+
+                # Store what the observer thinks of the target
+                observer.reputation_beliefs[target_agent.name] = final_belief
+                individual_beliefs.append(final_belief)
+
+            # --- 4. Update Global Public Reputation ---
+            # This is the "average social standing" of the agent
+            if individual_beliefs:
+                target_agent.reputation = sum(individual_beliefs) / len(individual_beliefs)
             else:
-                agent.reputation = 0.5
+                target_agent.reputation = 0.5
 
     def initialize_agents(self, num_agents, generation):
         """Initialize agents with diverse strategies"""
