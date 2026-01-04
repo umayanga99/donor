@@ -776,26 +776,3 @@ class PrisonersDilemmaBase:
 
         return filename
 
-
-# Example usage
-if __name__ == "__main__":
-    # Replace with your actual API key
-    API_KEY = os.getenv("ANTHROPIC_API_KEY", "your-api-key-here")
-
-    # Run simulation with all mechanisms enabled
-    sim = PrisonersDilemmaBase(
-        api_key=API_KEY,
-        model="claude-3-5-sonnet-20240620",
-        enable_regret=True,
-        enable_gossip=True,
-        enable_forgiveness=True,
-        seed=42,
-        num_rounds_per_generation=5
-    )
-
-    result_file = sim.run_simulation(
-        num_generations=3,
-        num_agents=6
-    )
-
-    print(f"\nResults saved to: {result_file}")
