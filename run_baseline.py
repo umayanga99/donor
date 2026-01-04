@@ -3,16 +3,20 @@
 Baseline: All mechanisms OFF
 """
 import os
-from donor_game_old import DonorGameBase
+from prisoners import PrisonersDilemmaBase
+from dotenv import load_dotenv
 
 def main():
+    load_dotenv()
     api_key = os.getenv("ANTHROPIC_API_KEY")
     if not api_key:
         raise ValueError("ANTHROPIC_API_KEY environment variable not set")
 
+    print("="*80)
     print("BASELINE: All mechanisms OFF")
+    print("="*80)
 
-    game = DonorGameBase(
+    game = PrisonersDilemmaBase(
         api_key=api_key,
         enable_regret=False,
         enable_gossip=False,
@@ -24,4 +28,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

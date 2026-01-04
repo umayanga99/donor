@@ -12,19 +12,19 @@ def main():
     if not api_key:
         raise ValueError("ANTHROPIC_API_KEY environment variable not set")
 
+    print("="*80)
     print("ALL MECHANISMS: GOSSIP (REPUTATION) + FORGIVENESS + REGRET")
-
+    print("="*80)
 
     game = PrisonersDilemmaBase(
         api_key=api_key,
-        enable_regret=True,  # Regret mechanism
-        enable_gossip=True,  # Reputation mechanism
-        enable_forgiveness=True  # Forgiveness mechanism
+        enable_regret=True,
+        enable_gossip=True,
+        enable_forgiveness=True
     )
 
-    game.run_simulation(num_generations=3, num_agents=6)
+    game.run_simulation(num_generations=3, num_agents=8)
     print("\nAll mechanisms simulation complete!")
 
 if __name__ == "__main__":
     main()
-
