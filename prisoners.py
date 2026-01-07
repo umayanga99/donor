@@ -425,7 +425,8 @@ class PrisonersDilemmaBase:
                                 about_agent=gossip.about_agent,
                                 sentiment=gossip.sentiment,
                                 reliability=gossip.reliability * 0.9,
-                                round_received=self.current_round,
+                                # This preserves when the event actually happened, not when it was shared
+                                round_received=gossip.round_received,
                                 source=agent.name
                             ))
 
