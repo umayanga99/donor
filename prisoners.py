@@ -226,12 +226,12 @@ class PrisonersDilemmaBase:
         cooperate_pos = raw.upper().rfind('COOPERATE')
         defect_pos = raw.upper().rfind('DEFECT')
 
+        # FIX APPLIED: Safer Fallback Logic
         if cooperate_pos != -1 and defect_pos != -1:
-            # Both found, use the last one mentioned
-            if cooperate_pos > defect_pos:
-                return "COOPERATE", raw
-            else:
-                return "DEFECT", raw
+            # If both words exist, it is ambiguous (likely reasoning).
+            # It is safer to default to the STRATEGY logic rather than guessing based on word position.
+            return self._get_strategy_default_choice(agent, partner), raw
+
         elif cooperate_pos != -1:
             return "COOPERATE", raw
         elif defect_pos != -1:
@@ -372,21 +372,33 @@ class PrisonersDilemmaBase:
             return f"{a.name}({choice_a}) vs {b.name}({choice_b}) → {payoff_a}/{payoff_b} pts"
 
     def _calculate_regret(self, agent, choice_self, choice_partner, payoff_self):
-        """Calculate regret as difference between best possible and actual payoff"""
+        """Calculate normalized regret (0.0 to 1.0)"""
         if not self.enable_regret:
             return 0.0
 
-        # What was the best payoff I could have gotten given partner's choice?
+        # FIX APPLIED: Social Regret Logic
+        # If we achieved Mutual Cooperation (Reward=3), we should feel NO regret.
+        # We ignore the temptation to defect (5) because satisfying it breaks the relationship.
+        if choice_self == "COOPERATE" and choice_partner == "COOPERATE":
+            return 0.0  # Force regret to 0 for successful cooperation
+
+        # 1. Determine best possible payoff given partner's move
         if choice_partner == "COOPERATE":
-            best_payoff = 5  # Could have defected for 5
-        else:  # partner defected
-            best_payoff = 1  # Best was mutual defect for 1
+            best_payoff = 5  # T (Temptation)
+        else:
+            best_payoff = 1  # P (Punishment) - this is the best you can do if they defect
 
-        # Regret = missed opportunity, modulated by optimism
+        # 2. Calculate Raw Regret
         raw_regret = max(0, best_payoff - payoff_self)
-        regret = raw_regret * (1.0 - 0.5 * agent.optimism)
 
-        return regret
+        # 3. Normalize Regret
+        # Since we removed the (5-3) case, the max raw regret left is actually 1.0 (1-0).
+        normalized_regret = raw_regret / 1.0
+
+        # 4. Apply Optimism (optimistic agents feel less regret)
+        final_regret = normalized_regret * (1.0 - 0.5 * agent.optimism)
+
+        return final_regret
 
     def _generate_gossip(self, observer, partner, partner_choice, round_num):
         """Generate gossip about partner's behavior"""
@@ -461,14 +473,21 @@ class PrisonersDilemmaBase:
             return f"Gossip: {partner.name} has mixed behavior. "
 
     def get_regret_context(self, agent):
-        """Get regret context for decision-making"""
+        """Get regret context with semantic nuance"""
         if not self.enable_regret or not agent.regret_memories:
             return ""
 
-        if agent.regret_level > 0.5:
-            return "You feel significant regret from being exploited. Be cautious. "
-        elif agent.regret_level > 0.2:
-            return "You have some regret from recent interactions. "
+        # Check the specifics of the LAST interaction to give accurate context
+        last_mem = agent.regret_memories[-1]
+
+        # Threshold checks on normalized data
+        # Note: Since Mutual Cooperation now returns 0.0 Regret, high regret
+        # specifically implies the agent was a "Sucker" (Cooperated while partner Defected).
+        if agent.regret_level > 0.4:
+            return "Strategy Insight: You were exploited in the last round (earned 0). You regret trusting blindly. "
+
+        elif agent.regret_level > 0.1:
+            return "Strategy Insight: You have mild regret about your recent choices. "
 
         return ""
 
@@ -821,4 +840,3 @@ class PrisonersDilemmaBase:
         print(f"{'=' * 60}")
 
         return filename
-
