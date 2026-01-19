@@ -829,7 +829,7 @@ class PrisonersDilemmaBase:
         # Save results to JSON
         os.makedirs("results", exist_ok=True)
         timestamp = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
-        filename = f"results/claude_pd_{mech_name}_{timestamp}.json"
+        filename = f"latest_results/claude_pd_{mech_name}_{timestamp}.json"
 
         with open(filename, "w") as f:
             json.dump(self.simulation_data.to_dict(), f, indent=2)

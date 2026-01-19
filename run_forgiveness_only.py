@@ -23,7 +23,7 @@ def main():
         enable_forgiveness=True
     )
 
-    game.run_simulation(num_generations=3, num_agents=6)
+    game.run_simulation(num_generations=12, num_agents=10)
     print("\nForgiveness-only simulation complete!")
 
 if __name__ == "__main__":
