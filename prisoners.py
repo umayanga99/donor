@@ -827,7 +827,7 @@ class PrisonersDilemmaBase:
                 print(f"Next generation: {len(agents)} agents")
 
         # Save results to JSON
-        os.makedirs("results", exist_ok=True)
+        os.makedirs("latest_results", exist_ok=True)
         timestamp = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
         filename = f"latest_results/claude_pd_{mech_name}_{timestamp}.json"
 

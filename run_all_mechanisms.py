@@ -21,9 +21,10 @@ def main():
         enable_regret=True,
         enable_gossip=True,
         enable_forgiveness=True
-    )
 
-    game.run_simulation(num_generations=3, num_agents=8)
+
+
+    game.run_simulation(num_generations=12, num_agents=10)
     print("\nAll mechanisms simulation complete!")
 
 if __name__ == "__main__":
