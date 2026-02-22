@@ -100,6 +100,9 @@ class AgentRoundData:
     forgiveness_given: float = 0.0
     gossip_influenced: bool = False
     reputation: float = 0.5
+    social_incentive_applied: float = 0.0
+    cooperation_ratio: float = 0.0
+    final_resources_after_incentive: float = 0.0
 
 
 class PrisonersDilemmaBase:
@@ -175,11 +178,14 @@ class PrisonersDilemmaBase:
             f"Partner: {partner.name}. Round: {r_idx + 1}.\n"
             f"{history_text}"
             f"{ctx}\n"
+            f"STRATEGY TIP: Cooperation builds trust and mutual wealth. Defection isolates you and triggers penalties.\n"
+            f"SOCIETAL RULES: Cooperation (>70%) earns a +50% reward on your current resources. Defection (<30%) earns a -50% tax.\n"
             f"Payoff Matrix:\n"
-            f"  Both COOPERATE: (3, 3) pts\n"
-            f"  You DEFECT, Partner COOPERATES: (5, 0) pts\n"
-            f"  You COOPERATE, Partner DEFECTS: (0, 5) pts\n"
-            f"  Both DEFECT: (1, 1) pts\n"
+            f"  Both COOPERATE: (3, 3) pts - STABLE, builds trust\n"
+            f"  You DEFECT, Partner COOPERATES: (5, 0) pts - You exploit them (damages relationship, triggers tax)\n"
+            f"  You COOPERATE, Partner DEFECTS: (0, 5) pts - You're exploited (they face penalties)\n"
+            f"  Both DEFECT: (1, 1) pts - MUTUAL LOSS, both taxed, wasteful\n"
+            f"RECOMMENDATION: Choose COOPERATE to signal trustworthiness, build long-term reputation, and secure mutual rewards.\n"
             f"Choose: [COOPERATE] or [DEFECT].\n"
             f"Explain your reasoning briefly, then end with: Answer: [CHOICE]"
         )
@@ -665,6 +671,49 @@ class PrisonersDilemmaBase:
 
         return rounds
 
+    def calculate_generation_average_score(self, agents):
+        """
+        Calculate the average score across all agents in the current generation.
+        Used to normalize social incentive bonuses and prevent the Matthew Effect.
+        """
+        if not agents:
+            return self.initial_endowment
+
+        total = sum(a.resources for a in agents)
+        return total / len(agents)
+
+    def calculate_social_incentive(self, agent, generation_avg_score=None):
+        total_moves = len(agent.history)
+        if total_moves == 0:
+            return 0
+
+        # Calculate how often they cooperated
+        # We use total_donated which tracks self cooperation (1.0 per COOPERATE)
+        coop_count = agent.total_donated
+        coop_ratio = coop_count / total_moves
+
+        # PERCENTAGE-BASED INCENTIVES:
+        # Tax/Reward is a percentage of agent's current resources
+        tax_reward_rate = 0.5  # 50% of resources
+
+        # Reward/Penalty Logic:
+        if coop_ratio > 0.7:
+            # High Cooperator: +50% reward on current resources
+            return agent.resources * tax_reward_rate
+        elif coop_ratio < 0.3:
+            # High Defector: -50% tax on current resources
+            return -agent.resources * tax_reward_rate
+
+        return 0
+
+    def get_agent_cooperation_ratio(self, agent):
+        """Calculate cooperation ratio for an agent"""
+        total_moves = len(agent.history)
+        if total_moves == 0:
+            return 0.0
+        coop_count = agent.total_donated
+        return coop_count / total_moves
+
     def run_simulation(self, num_generations=3, num_agents=6):
         """Run the complete simulation"""
         random.seed(self.seed)
@@ -673,8 +722,18 @@ class PrisonersDilemmaBase:
         mech_name = self.get_mechanism_name()
 
         sys_prompt = (
-            "You are playing a Prisoner's Dilemma game. "
-            "Choose COOPERATE or DEFECT to maximize your total points. "
+            "You are playing a Prisoner's Dilemma game focused on building sustainable cooperation and mutual prosperity. "
+            "CRITICAL INSIGHT FOR SUCCESS:\n"
+            "• Cooperation (>70% moves) = COMPOUNDING WEALTH: You earn +50% reward on ALL your accumulated resources each generation\n"
+            "• Defection (<30% moves) = WEALTH EROSION: You lose -50% tax on ALL your accumulated resources each generation\n"
+            "• The compound effect is MASSIVE: A cooperator with 100pts becomes 150pts. A defector with 100pts becomes 50pts.\n"
+            "STRATEGIC ANALYSIS:\n"
+            "• Mutual Cooperation (C,C) = 3pts per round + 50% bonus = STABLE, RELIABLE, LONG-TERM GAINS\n"
+            "• Mutual Defection (D,D) = 1pt per round - 50% tax = MUTUAL POVERTY, WASTEFUL, UNSUSTAINABLE\n"
+            "• You Defect Alone (D,C) = 5pts one round BUT triggers -50% tax and damages ALL future relationships\n"
+            "• You Get Exploited (C,D) = 0pts this round BUT protects your cooperation reputation for future partners\n"
+            "Consistent cooperation with multiple partners creates exponential wealth through 50% bonuses.\n"
+            "Defection appears tempting (5pts) but destroys long-term gains and triggers massive penalties.\n"
             "Payoffs: (C,C)=3 each, (D,C)=5 for defector/0 for cooperator, (D,D)=1 each."
         )
 
@@ -780,10 +839,50 @@ class PrisonersDilemmaBase:
 
             # Evolutionary Selection
             if gen < num_generations:
-                # Select top 50% as survivors
-                survivors = sorted(agents, key=lambda x: x.resources, reverse=True)[
-                    :max(2, num_agents // 2)
-                ]
+                # 0. Calculate generation average score for normalization
+                gen_avg_score = self.calculate_generation_average_score(agents)
+                print(f"\nGeneration Average Score: {gen_avg_score:.2f}")
+
+                # 1. Apply Social Incentives before selection (with normalized bonus)
+                for a in agents:
+                    adjustment = self.calculate_social_incentive(a, generation_avg_score=gen_avg_score)
+                    a.resources += adjustment
+                    print(f"  Social Adjustment for {a.name}: {adjustment:+.1f} (Final: {a.resources:.1f})")
+
+                # 1b. Collect final data with social incentives applied
+                for a in agents:
+                    coop_ratio = self.get_agent_cooperation_ratio(a)
+                    adjustment = self.calculate_social_incentive(a, generation_avg_score=gen_avg_score)
+                    # Create a final record showing the incentive application
+                    final_record = AgentRoundData(
+                        agent_name=a.name,
+                        round_number=self.num_rounds_per_generation,  # Last round of generation
+                        game_number=gen,
+                        paired_with="FINAL",  # Indicates this is the final generation summary
+                        current_generation=gen,
+                        resources=a.resources - adjustment,  # Resources BEFORE incentive
+                        donated=a.last_donation,
+                        received=a.last_received,
+                        strategy=a.strategy,
+                        strategy_justification=a.strategy_justification,
+                        traces=list(a.traces),
+                        history=list(a.history),
+                        justification=a.justification,
+                        regret_level=a.regret_level,
+                        forgiveness_given=a.forgiveness_given,
+                        gossip_influenced=a.current_round_gossip_influenced,
+                        reputation=a.reputation,
+                        social_incentive_applied=adjustment,
+                        cooperation_ratio=coop_ratio,
+                        final_resources_after_incentive=a.resources
+                    )
+                    self.simulation_data.agents_data.append(asdict(final_record))
+
+                # 2. Sort by the NEW adjusted resources
+                sorted_agents = sorted(agents, key=lambda x: x.resources, reverse=True)
+
+                # 3. Evolutionary Selection (Top 50% survive)
+                survivors = sorted_agents[:max(2, num_agents // 2)]
 
                 print(f"\nSurvivors: {[s.name for s in survivors]}")
 
