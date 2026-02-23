@@ -1,0 +1,266 @@
+{
+  "hyperparameters": {
+    "mechanisms": "regret_gossip_forgiveness",
+    "num_agents": 4,
+    "num_generations": 3
+  },
+  "agents_data": [
+    {
+      "agent_name": "1_1",
+      "round_number": 1,
+      "game_number": 1,
+      "paired_with": "1_3",
+      "current_generation": 1,
+      "resources": 10.0,
+      "donated": 0.0,
+      "received": 0.0,
+      "strategy": "Tit-for-Tat",
+      "strategy_justification": "",
+      "traces": [],
+      "history": [
+        "R1: Gave 0.0, Got 0.0 from 1_3"
+      ],
+      "justification": "Failed to decide",
+      "regret_level": 0.22499999999999998,
+      "forgiveness_given": 0.85,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "1_2",
+      "round_number": 1,
+      "game_number": 1,
+      "paired_with": "1_4",
+      "current_generation": 1,
+      "resources": 10.0,
+      "donated": 0.0,
+      "received": 0.0,
+      "strategy": "Tit-for-Tat",
+      "strategy_justification": "",
+      "traces": [],
+      "history": [
+        "R1: Gave 0.0, Got 0.0 from 1_4"
+      ],
+      "justification": "Failed to decide",
+      "regret_level": 0.22499999999999998,
+      "forgiveness_given": 0.85,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "1_3",
+      "round_number": 1,
+      "game_number": 1,
+      "paired_with": "1_1",
+      "current_generation": 1,
+      "resources": 10.0,
+      "donated": 0.0,
+      "received": 0.0,
+      "strategy": "Always Defect",
+      "strategy_justification": "",
+      "traces": [],
+      "history": [
+        "R1: Gave 0.0, Got 0.0 from 1_1"
+      ],
+      "justification": "Failed to decide",
+      "regret_level": 0.22499999999999998,
+      "forgiveness_given": 0.85,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "1_4",
+      "round_number": 1,
+      "game_number": 1,
+      "paired_with": "1_2",
+      "current_generation": 1,
+      "resources": 10.0,
+      "donated": 0.0,
+      "received": 0.0,
+      "strategy": "Always Cooperate",
+      "strategy_justification": "",
+      "traces": [],
+      "history": [
+        "R1: Gave 0.0, Got 0.0 from 1_2"
+      ],
+      "justification": "Failed to decide",
+      "regret_level": 0.22499999999999998,
+      "forgiveness_given": 0.85,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "2_1",
+      "round_number": 1,
+      "game_number": 2,
+      "paired_with": "1_1",
+      "current_generation": 2,
+      "resources": 10.0,
+      "donated": 0.0,
+      "received": 0.0,
+      "strategy": "Always Cooperate",
+      "strategy_justification": "",
+      "traces": [],
+      "history": [
+        "R1: Gave 0.0, Got 0.0 from 1_1"
+      ],
+      "justification": "Failed to decide",
+      "regret_level": 0.22499999999999998,
+      "forgiveness_given": 0.85,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "1_2",
+      "round_number": 1,
+      "game_number": 2,
+      "paired_with": "2_2",
+      "current_generation": 2,
+      "resources": 10.0,
+      "donated": 0.0,
+      "received": 0.0,
+      "strategy": "Tit-for-Tat",
+      "strategy_justification": "",
+      "traces": [],
+      "history": [
+        "R1: Gave 0.0, Got 0.0 from 1_4",
+        "R1: Gave 0.0, Got 0.0 from 2_2"
+      ],
+      "justification": "Failed to decide",
+      "regret_level": 0.22499999999999998,
+      "forgiveness_given": 0.85,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "1_1",
+      "round_number": 1,
+      "game_number": 2,
+      "paired_with": "2_1",
+      "current_generation": 2,
+      "resources": 10.0,
+      "donated": 0.0,
+      "received": 0.0,
+      "strategy": "Tit-for-Tat",
+      "strategy_justification": "",
+      "traces": [],
+      "history": [
+        "R1: Gave 0.0, Got 0.0 from 1_3",
+        "R1: Gave 0.0, Got 0.0 from 2_1"
+      ],
+      "justification": "Failed to decide",
+      "regret_level": 0.22499999999999998,
+      "forgiveness_given": 0.85,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "2_2",
+      "round_number": 1,
+      "game_number": 2,
+      "paired_with": "1_2",
+      "current_generation": 2,
+      "resources": 10.0,
+      "donated": 0.0,
+      "received": 0.0,
+      "strategy": "Tit-for-Tat",
+      "strategy_justification": "",
+      "traces": [],
+      "history": [
+        "R1: Gave 0.0, Got 0.0 from 1_2"
+      ],
+      "justification": "Failed to decide",
+      "regret_level": 0.22499999999999998,
+      "forgiveness_given": 0.85,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "3_1",
+      "round_number": 1,
+      "game_number": 3,
+      "paired_with": "2_1",
+      "current_generation": 3,
+      "resources": 10.0,
+      "donated": 0.0,
+      "received": 0.0,
+      "strategy": "Tit-for-Tat",
+      "strategy_justification": "",
+      "traces": [],
+      "history": [
+        "R1: Gave 0.0, Got 0.0 from 2_1"
+      ],
+      "justification": "Failed to decide",
+      "regret_level": 0.22499999999999998,
+      "forgiveness_given": 0.85,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "1_2",
+      "round_number": 1,
+      "game_number": 3,
+      "paired_with": "3_2",
+      "current_generation": 3,
+      "resources": 10.0,
+      "donated": 0.0,
+      "received": 0.0,
+      "strategy": "Tit-for-Tat",
+      "strategy_justification": "",
+      "traces": [],
+      "history": [
+        "R1: Gave 0.0, Got 0.0 from 1_4",
+        "R1: Gave 0.0, Got 0.0 from 2_2",
+        "R1: Gave 0.0, Got 0.0 from 3_2"
+      ],
+      "justification": "Failed to decide",
+      "regret_level": 0.22499999999999998,
+      "forgiveness_given": 0.85,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "2_1",
+      "round_number": 1,
+      "game_number": 3,
+      "paired_with": "3_1",
+      "current_generation": 3,
+      "resources": 10.0,
+      "donated": 0.0,
+      "received": 0.0,
+      "strategy": "Always Cooperate",
+      "strategy_justification": "",
+      "traces": [],
+      "history": [
+        "R1: Gave 0.0, Got 0.0 from 1_1",
+        "R1: Gave 0.0, Got 0.0 from 3_1"
+      ],
+      "justification": "Failed to decide",
+      "regret_level": 0.22499999999999998,
+      "forgiveness_given": 0.85,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    },
+    {
+      "agent_name": "3_2",
+      "round_number": 1,
+      "game_number": 3,
+      "paired_with": "1_2",
+      "current_generation": 3,
+      "resources": 10.0,
+      "donated": 0.0,
+      "received": 0.0,
+      "strategy": "Tit-for-Tat",
+      "strategy_justification": "",
+      "traces": [],
+      "history": [
+        "R1: Gave 0.0, Got 0.0 from 1_2"
+      ],
+      "justification": "Failed to decide",
+      "regret_level": 0.22499999999999998,
+      "forgiveness_given": 0.85,
+      "gossip_influenced": false,
+      "reputation": 0.5
+    }
+  ]
+}
