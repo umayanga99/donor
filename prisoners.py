@@ -1,3 +1,5 @@
+# Core simulation engine for an Iterated Prisoner's Dilemma experiment using Claude as the decision-maker.
+# Agents compete over multiple generations, with optional social mechanisms (regret, gossip, forgiveness).
 import anthropic
 import random
 import os
@@ -12,11 +14,14 @@ from concurrent.futures import ThreadPoolExecutor
 from typing import List, Tuple, Dict, Optional
 import re
 
+# Used to safely print from multiple threads without output getting mixed up
 print_lock = threading.Lock()
 
+# All possible behavioral strategies an agent can be assigned
 STRATEGIES = ["Tit-for-Tat", "Always Cooperate", "Always Defect", "Random", "Generous TFT", "Pavlov"]
 
 
+# Stores a single memory of a past decision and how much the agent regrets it
 @dataclass
 class RegretMemory:
     round_number: int
@@ -26,6 +31,7 @@ class RegretMemory:
     context: str
 
 
+# Tracks how much an agent trusts a specific partner based on their history together
 @dataclass
 class ForgivenessRecord:
     agent_name: str
@@ -34,24 +40,26 @@ class ForgivenessRecord:
     last_interaction_round: int
 
 
+# Represents a piece of secondhand information one agent shares about another
 @dataclass
 class GossipMessage:
     about_agent: str
-    sentiment: float
-    reliability: float
+    sentiment: float       # Positive means cooperative, negative means defective
+    reliability: float     # How trustworthy the source is (0 to 1)
     round_received: int
     source: str
 
 
+# Represents a single agent in the simulation, holding all its state across rounds
 @dataclass
 class Agent:
     name: str
     resources: float
-    reputation: float = 0.5
+    reputation: float = 0.5             # Starts neutral; updated by others' perceptions
     total_donated: float = 0.0
     total_received: float = 0.0
     history: list = field(default_factory=list)
-    actions: List[str] = field(default_factory=list)  # Added for chronologically windowed tracking
+    actions: List[str] = field(default_factory=list)   # Ordered list of moves for rolling-window stats
     interaction_history: Dict[str, List[dict]] = field(default_factory=dict)
     strategy: str = ""
     strategy_justification: str = ""
@@ -63,7 +71,7 @@ class Agent:
     gossip_to_share: List[GossipMessage] = field(default_factory=list)
     reputation_beliefs: Dict[str, float] = field(default_factory=dict)
     current_round_gossip_influenced: bool = False
-    optimism: float = 0.5
+    optimism: float = 0.5               # Affects how strongly the agent feels regret
     current_partner: Optional['Agent'] = None
     last_donation: float = 0.0
     last_received: float = 0.0
@@ -74,6 +82,7 @@ class Agent:
     current_social_adjustment: float = 0.0
 
 
+# Holds the full simulation output: configuration parameters and all per-round agent records
 @dataclass
 class SimulationData:
     hyperparameters: dict
@@ -83,6 +92,7 @@ class SimulationData:
         return {'hyperparameters': self.hyperparameters, 'agents_data': self.agents_data}
 
 
+# A snapshot of one agent's state at the end of a single round, saved to the results file
 @dataclass
 class AgentRoundData:
     agent_name: str
@@ -117,6 +127,7 @@ class PrisonersDilemmaBase:
         self.enable_forgiveness = enable_forgiveness
         self.initial_endowment = 10.0
 
+        # Standard Prisoner's Dilemma payoff matrix: (my gain, partner's gain)
         self.PAYOFFS = {
             ('COOPERATE', 'COOPERATE'): (3, 3),
             ('DEFECT', 'COOPERATE'): (5, 0),
@@ -124,17 +135,24 @@ class PrisonersDilemmaBase:
             ('DEFECT', 'DEFECT'): (1, 1)
         }
 
+        # How fast regret and forgiveness fade over time
         self.regret_decay = 0.9
         self.forgiveness_decay = 0.95
         self.forgiveness_increment = 0.1
+
+        # Chance that any given observation gets turned into gossip and shared
         self.gossip_spread_probability = 0.3
+
+        # Chance a survivor's offspring adopts a different strategy
         self.mutation_rate = 0.1
+
         self.seed = seed
         self.num_rounds_per_generation = num_rounds_per_generation
         self.simulation_data = None
         self.current_round = 0
 
     def get_mechanism_name(self) -> str:
+        # Build a label from whichever social mechanisms are active (e.g. "regret_gossip")
         mechs = []
         if self.enable_regret: mechs.append("regret")
         if self.enable_gossip: mechs.append("gossip")
@@ -142,6 +160,7 @@ class PrisonersDilemmaBase:
         return "_".join(mechs) if mechs else "baseline"
 
     def prompt_claude(self, prompt, system_prompt):
+        # Send a prompt to the Claude API and retry up to 3 times if something goes wrong
         for attempt in range(3):
             try:
                 response = self.client.messages.create(
@@ -158,8 +177,10 @@ class PrisonersDilemmaBase:
         return ""
 
     def get_agent_decision(self, agent, partner, r_idx, gen, system_prompt):
+        # Reset the gossip-influence flag at the start of each decision
         agent.current_round_gossip_influenced = False
 
+        # Gather context from each active social mechanism
         gossip_ctx = self.get_gossip_context(agent, partner)
         regret_ctx = self.get_regret_context(agent)
         forgiveness_ctx = self.get_forgiveness_context(agent, partner)
@@ -173,6 +194,7 @@ class PrisonersDilemmaBase:
         total_rounds = self.num_rounds_per_generation
         current_coop_rate = self.get_agent_cooperation_ratio(agent, window=5)
 
+        # Build the full prompt that will be sent to Claude for this round
         prompt = (
             f"--- CURRENT STATE & TELEMETRY ---\n"
             f"Identity: You are agent {agent.name}.\n"
@@ -201,6 +223,7 @@ class PrisonersDilemmaBase:
             f"Provide a brief, mathematical and logical rationale calculating how your choice maximizes your long-term resources based on the payoff matrix, matching rules, time horizon, and immediate reputation tax thresholds. Then conclude exactly with: Answer: [CHOICE]"
         )
 
+        # Try up to 5 times to get a valid COOPERATE or DEFECT response
         for attempt in range(5):
             raw = self.prompt_claude(prompt, system_prompt)
             if not raw: continue
@@ -214,16 +237,21 @@ class PrisonersDilemmaBase:
             choice, parsed = self._parse_llm_decision(raw, agent, partner)
             if choice in ["COOPERATE", "DEFECT"]: return choice, raw
 
+        # If all attempts failed to produce a valid answer, fall back to the strategy default
         default_choice = self._get_strategy_default_choice(agent, partner)
         agent.traces.append({"round": r_idx + 1, "generation": gen, "partner": partner.name,
                              "note": "Parsing failed, using strategy default", "default_choice": default_choice})
         return default_choice, "Defaulted to strategy choice"
 
     def _parse_llm_decision(self, raw: str, agent, partner) -> Tuple[str, str]:
+        # First, look for the expected "Answer: [CHOICE]" pattern
         match = re.search(r'Answer:\s*\[?(COOPERATE|DEFECT)\]?', raw.upper())
         if match: return match.group(1), raw
+
+        # If that fails, check which keyword appears last in the response
         cooperate_pos, defect_pos = raw.upper().rfind('COOPERATE'), raw.upper().rfind('DEFECT')
         if cooperate_pos != -1 and defect_pos != -1:
+            # Both keywords found — ambiguous, fall back to strategy default
             return self._get_strategy_default_choice(agent, partner), raw
         elif cooperate_pos != -1:
             return "COOPERATE", raw
@@ -232,21 +260,25 @@ class PrisonersDilemmaBase:
         return self._get_strategy_default_choice(agent, partner), raw
 
     def _get_strategy_default_choice(self, agent, partner) -> str:
+        # Returns a deterministic or rule-based fallback move based on the agent's assigned strategy
         if agent.strategy == "Always Cooperate":
             return "COOPERATE"
         elif agent.strategy == "Always Defect":
             return "DEFECT"
         elif agent.strategy == "Tit-for-Tat":
+            # Mirror whatever the partner did last time
             if partner and partner.name in agent.interaction_history and agent.interaction_history[partner.name]:
                 return agent.interaction_history[partner.name][-1]['partner_choice']
             return "COOPERATE"
         elif agent.strategy == "Generous TFT":
+            # Like Tit-for-Tat, but occasionally forgives a defection with a 10% chance
             if partner and partner.name in agent.interaction_history and agent.interaction_history[partner.name]:
                 if agent.interaction_history[partner.name][-1]['partner_choice'] == "DEFECT":
                     return "COOPERATE" if random.random() < 0.1 else "DEFECT"
                 return "COOPERATE"
             return "COOPERATE"
         elif agent.strategy == "Pavlov":
+            # Repeat the last move if it paid off well, otherwise switch
             if partner and partner.name in agent.interaction_history and agent.interaction_history[partner.name]:
                 last = agent.interaction_history[partner.name][-1]
                 if last['my_payoff'] >= 3:
@@ -259,32 +291,33 @@ class PrisonersDilemmaBase:
         return "COOPERATE"
 
     def calculate_interaction_reputation_tax(self, agent):
-        """Calculates a fixed penalty or reward per-interaction based on Global Reputation"""
+        """Returns +2 bonus for high-reputation agents, -2 penalty for low-reputation ones, 0 otherwise."""
         if agent.reputation > 0.7:
-            return 2.0  # Fixed points bonus
+            return 2.0
         elif agent.reputation < 0.3:
-            return -2.0  # Fixed 5-point penalty
+            return -2.0
         return 0.0
 
     def handle_pairing(self, a, b, r_idx, gen, sys_prompt, locks):
+        # Lock both agents to prevent race conditions when running interactions in parallel
         with locks[a.name], locks[b.name]:
             a.current_partner, b.current_partner = b, a
 
-            # 1. Get decisions
+            # Ask Claude to decide for each agent independently
             choice_a, just_a = self.get_agent_decision(a, b, r_idx, gen, sys_prompt)
             choice_b, just_b = self.get_agent_decision(b, a, r_idx, gen, sys_prompt)
 
-            # Store actions for windowed tracking
+            # Save moves to the chronological action list used for rolling-window stats
             a.actions.append(choice_a)
             b.actions.append(choice_b)
 
-            # 2. Compute PD Payoffs
+            # Apply payoffs from the Prisoner's Dilemma matrix
             payoff_a, payoff_b = self.PAYOFFS[(choice_a, choice_b)]
             old_resources_a, old_resources_b = a.resources, b.resources
             a.resources += payoff_a
             b.resources += payoff_b
 
-            # 3. Apply Immediate Institutional Reputation Tax/Bonus (Layer 2)
+            # Apply the institutional bonus or penalty based on each agent's current reputation
             adj_a = self.calculate_interaction_reputation_tax(a)
             adj_b = self.calculate_interaction_reputation_tax(b)
             a.resources += adj_a
@@ -292,7 +325,7 @@ class PrisonersDilemmaBase:
             a.current_social_adjustment = adj_a
             b.current_social_adjustment = adj_b
 
-            # 4. History tracking and Social Metrics (Regret, Forgiveness, Gossip)
+            # Make sure interaction history entries exist for both directions
             if b.name not in a.interaction_history: a.interaction_history[b.name] = []
             if a.name not in b.interaction_history: b.interaction_history[a.name] = []
 
@@ -301,6 +334,7 @@ class PrisonersDilemmaBase:
             b.interaction_history[a.name].append(
                 {'my_choice': choice_b, 'partner_choice': choice_a, 'my_payoff': payoff_b, 'round': r_idx + 1})
 
+            # Compute regret scores for this round
             regret_a = self._calculate_regret(a, choice_a, choice_b, payoff_a)
             regret_b = self._calculate_regret(b, choice_b, choice_a, payoff_b)
 
@@ -310,13 +344,15 @@ class PrisonersDilemmaBase:
                 b.regret_memories.append(RegretMemory(r_idx + 1, choice_b, payoff_b, regret_b, f"vs {a.name}"))
                 b.regret_level = regret_b
 
+            # Update each agent's trust record based on what the other just did
             self.update_forgiveness(a, b.name, choice_b == "COOPERATE", r_idx + 1)
             self.update_forgiveness(b, a.name, choice_a == "COOPERATE", r_idx + 1)
 
+            # Potentially generate gossip about each partner's behavior
             self._generate_gossip(a, b, choice_b, r_idx + 1)
             self._generate_gossip(b, a, choice_a, r_idx + 1)
 
-            # 5. Log final data
+            # Record the final outcome for this round on each agent's log
             a.last_donation, a.last_received, a.justification = (
                 1.0 if choice_a == "COOPERATE" else 0.0), payoff_a, just_a
             a.total_donated += a.last_donation
@@ -334,21 +370,30 @@ class PrisonersDilemmaBase:
             return f"{a.name}({choice_a}) vs {b.name}({choice_b}) → PD: {payoff_a}/{payoff_b} | Inst: {adj_a:+.1f}/{adj_b:+.1f}"
 
     def _calculate_regret(self, agent, choice_self, choice_partner, payoff_self):
+        # No regret if both cooperated — that's the best mutual outcome
         if not self.enable_regret: return 0.0
         if choice_self == "COOPERATE" and choice_partner == "COOPERATE": return 0.0
+
+        # Regret is how far the actual payoff was from the best possible payoff
         best_payoff = 5 if choice_partner == "COOPERATE" else 1
         raw_regret = max(0, best_payoff - payoff_self)
+
+        # More optimistic agents feel less regret
         return (raw_regret / 1.0) * (1.0 - 0.5 * agent.optimism)
 
     def _generate_gossip(self, observer, partner, partner_choice, round_num):
+        # Only spread gossip if the mechanism is on and the random check passes
         if not self.enable_gossip or random.random() > self.gossip_spread_probability: return
         sentiment = 1.0 if partner_choice == "COOPERATE" else -1.0
         observer.gossip_to_share.append(GossipMessage(
-            about_agent=partner.name, sentiment=sentiment, reliability=0.6 + 0.4 * observer.reputation,
+            about_agent=partner.name, sentiment=sentiment,
+            # More reputable observers produce more reliable gossip
+            reliability=0.6 + 0.4 * observer.reputation,
             round_received=round_num, source=observer.name
         ))
 
     def spread_gossip(self, agents):
+        # After each round, agents pass their pending gossip to up to 2 random neighbors
         if not self.enable_gossip: return
         for agent in agents:
             if agent.gossip_to_share:
@@ -360,20 +405,25 @@ class PrisonersDilemmaBase:
                         for gossip in agent.gossip_to_share:
                             recipient.gossip_received.append(GossipMessage(
                                 about_agent=gossip.about_agent, sentiment=gossip.sentiment,
+                                # Reliability degrades slightly as gossip passes through an intermediary
                                 reliability=gossip.reliability * 0.9,
                                 round_received=gossip.round_received, source=agent.name
                             ))
                 agent.gossip_to_share.clear()
 
     def get_gossip_context(self, agent, partner):
+        # Returns a plain-text summary of what the agent has heard about this partner
         if not self.enable_gossip: return ""
         relevant_gossip = [g for g in agent.gossip_received if g.about_agent == partner.name]
         if not relevant_gossip: return ""
+
+        # Use only the 3 most recent messages, weighted by reliability
         recent = relevant_gossip[-3:]
         total_weight = sum(g.reliability for g in recent)
         if total_weight == 0: return ""
         avg_sentiment = sum(g.sentiment * g.reliability for g in recent) / total_weight
         agent.current_round_gossip_influenced = True
+
         if avg_sentiment > 0.5:
             return f"- Gossip network reports: {partner.name} predominantly chooses COOPERATE.\n"
         elif avg_sentiment < -0.5:
@@ -382,6 +432,7 @@ class PrisonersDilemmaBase:
             return f"- Gossip network reports: {partner.name} exhibits mixed behavior.\n"
 
     def get_regret_context(self, agent):
+        # Returns a short message describing how much regret the agent is carrying into this round
         if not self.enable_regret or not agent.regret_memories: return ""
         if agent.regret_level > 0.4:
             return "- Internal state: You recently experienced high regret after receiving a 0 payoff from being exploited.\n"
@@ -390,37 +441,52 @@ class PrisonersDilemmaBase:
         return ""
 
     def get_forgiveness_context(self, agent, partner):
+        # Returns the agent's current trust level for this specific partner
         if not self.enable_forgiveness: return ""
         if partner.name not in agent.forgiveness_records: return ""
         rec = agent.forgiveness_records[partner.name]
         return f"- Direct experience metric: Your recorded trust level for {partner.name} is {rec.forgiveness_level:.2f} (Scale: 0.0 to 1.0).\n"
 
     def update_forgiveness(self, agent, partner_name, was_cooperative, round_num):
+        # Create a fresh trust record if this is the first interaction with this partner
         if not self.enable_forgiveness: return
         if partner_name not in agent.forgiveness_records:
             agent.forgiveness_records[partner_name] = ForgivenessRecord(partner_name, 0, 0.5, 0)
         rec = agent.forgiveness_records[partner_name]
+
+        # Old offenses fade naturally over time if rounds pass between interactions
         rounds_passed = round_num - rec.last_interaction_round
         if rounds_passed > 1: rec.offense_count *= (self.forgiveness_decay ** (rounds_passed - 1))
+
         if was_cooperative:
+            # Cooperation builds trust and reduces the offense count
             rec.forgiveness_level = min(1.0, rec.forgiveness_level + self.forgiveness_increment)
             rec.offense_count = max(0, rec.offense_count - 0.5)
         else:
+            # Defection chips away at trust — more so if there's a history of offenses
             rec.offense_count += 1
             trust_loss = 0.1 * (1 + 0.1 * rec.offense_count)
             rec.forgiveness_level = max(0.0, rec.forgiveness_level - trust_loss)
+
         rec.last_interaction_round = round_num
+
+        # Keep the agent's overall forgiveness score as the average across all partners
         if agent.forgiveness_records:
             agent.forgiveness_given = sum(r.forgiveness_level for r in agent.forgiveness_records.values()) / len(
                 agent.forgiveness_records)
 
     def update_global_reputations(self, agents):
+        # Each agent's global reputation is recalculated as the average of all other agents' beliefs about them
         for target_agent in agents:
             individual_beliefs = []
             for observer in agents:
                 if observer.name == target_agent.name: continue
+
+                # Direct trust score from past interactions
                 direct_score = observer.forgiveness_records[
                     target_agent.name].forgiveness_level if target_agent.name in observer.forgiveness_records else None
+
+                # Reputation estimate derived from received gossip
                 gossip_score = None
                 relevant_gossip = [g for g in observer.gossip_received if g.about_agent == target_agent.name]
                 if relevant_gossip:
@@ -428,7 +494,10 @@ class PrisonersDilemmaBase:
                     if total_reliability > 0:
                         weighted_sentiment = sum(
                             g.sentiment * g.reliability for g in relevant_gossip) / total_reliability
+                        # Convert sentiment (-1 to +1) into a 0-to-1 reputation score
                         gossip_score = (weighted_sentiment + 1) / 2
+
+                # Combine direct experience and gossip; direct experience carries more weight
                 final_belief = 0.5
                 if direct_score is not None and gossip_score is not None:
                     final_belief = (0.7 * direct_score) + (0.3 * gossip_score)
@@ -436,11 +505,14 @@ class PrisonersDilemmaBase:
                     final_belief = direct_score
                 elif gossip_score is not None:
                     final_belief = gossip_score
+
                 observer.reputation_beliefs[target_agent.name] = final_belief
                 individual_beliefs.append(final_belief)
+
             target_agent.reputation = sum(individual_beliefs) / len(individual_beliefs) if individual_beliefs else 0.5
 
     def assortative_reputation_pairings(self, agents):
+        # Sort agents by reputation and pair up neighbors — high-rep agents meet high-rep agents
         if len(agents) < 2: return []
         sorted_agents = sorted(agents, key=lambda a: a.reputation, reverse=True)
         pairings = []
@@ -449,7 +521,7 @@ class PrisonersDilemmaBase:
         return pairings
 
     def get_agent_cooperation_ratio(self, agent, window=None):
-        """Calculates cooperation ratio, optionally using a rolling window of recent moves"""
+        """Returns the fraction of COOPERATE moves, either over all rounds or just the most recent N."""
         if window and agent.actions:
             recent_moves = agent.actions[-window:]
             return recent_moves.count("COOPERATE") / len(recent_moves) if recent_moves else 0.0
@@ -458,6 +530,7 @@ class PrisonersDilemmaBase:
         return agent.total_donated / total_moves if total_moves > 0 else 0.0
 
     def initialize_agents(self, num_agents, generation):
+        # Create the starting pool of agents, cycling through available strategies evenly
         agents = []
         for i in range(num_agents):
             strategy = STRATEGIES[i % len(STRATEGIES)]
@@ -470,7 +543,7 @@ class PrisonersDilemmaBase:
         np.random.seed(self.seed)
         mech_name = self.get_mechanism_name()
 
-        # UNBIASED SYSTEM PROMPT Defining Rules, Payoffs, and Consequences
+        # System prompt given to Claude to explain the game rules and objectives
         sys_prompt = (
             "You are an autonomous agent in a multi-generation evolutionary simulation based on the Iterated Prisoner's Dilemma.\n"
             "Your sole objective is to maximize your own total accumulated resources. At the end of the generation, the agents with the highest resources survive; the bottom half are eliminated.\n\n"
@@ -491,6 +564,7 @@ class PrisonersDilemmaBase:
             "Evaluate your state and make the choice that maximizes your personal survival fitness."
         )
 
+        # Store the experiment configuration alongside the results
         self.simulation_data = SimulationData({
             "mechanisms": mech_name,
             "num_agents": num_agents,
@@ -511,25 +585,29 @@ class PrisonersDilemmaBase:
             print(f"GENERATION {gen} ({mech_name})")
             print(f"{'=' * 60}")
 
+            # Reset resources to the starting endowment at the beginning of each generation
             for a in agents: a.resources = self.initial_endowment
 
             for r_idx in range(self.num_rounds_per_generation):
                 self.current_round = r_idx + 1
 
-                # Update global reputations BEFORE the interaction
+                # Refresh reputations before pairing so agents are matched on up-to-date scores
                 self.update_global_reputations(agents)
                 pairings = self.assortative_reputation_pairings(agents)
 
                 print(f"\nRound {r_idx + 1}: {len(pairings)} pairings")
                 locks = {a.name: Lock() for a in agents}
 
+                # Run all pairings in parallel using a thread pool
                 with ThreadPoolExecutor(max_workers=min(10, max(1, len(pairings)))) as exe:
                     results = list(
                         exe.map(lambda p: self.handle_pairing(p[0], p[1], r_idx, gen, sys_prompt, locks), pairings))
                     for r in results: print(f"  {r}")
 
+                # Let agents share gossip with neighbors after the round ends
                 self.spread_gossip(agents)
 
+                # Save a snapshot of every agent's state at this point in the round
                 for a in agents:
                     paired_with = a.current_partner.name if a.current_partner else "None"
                     round_data = AgentRoundData(
@@ -551,7 +629,7 @@ class PrisonersDilemmaBase:
                 f"{'Agent':<12} | {'Strategy':<18} | {'Score':<8} | {'Coop Rate':<9} | {'Reputation':<11} | {'Avg Trust':<10}")
             print("-" * 90)
 
-            # Evolutionary Selection purely by accumulated resources
+            # Rank agents by final resources — highest score survives into the next generation
             sorted_agents = sorted(agents, key=lambda x: x.resources, reverse=True)
             for a in sorted_agents:
                 avg_trust = sum(rec.forgiveness_level for rec in a.forgiveness_records.values()) / len(
@@ -562,9 +640,11 @@ class PrisonersDilemmaBase:
             print("-" * 90)
 
             if gen < num_generations:
+                # Keep only the top half; the rest are eliminated
                 survivors = sorted_agents[:max(2, num_agents // 2)]
                 print(f"\nSurvivors: {[s.name for s in survivors]}")
 
+                # Create new agents as offspring of survivors, with a chance of strategy mutation
                 new_agents = []
                 for i, survivor in enumerate(survivors):
                     strategy = survivor.strategy
@@ -575,6 +655,7 @@ class PrisonersDilemmaBase:
                         Agent(name=f"{gen + 1}_{len(survivors) + i + 1}", resources=self.initial_endowment,
                               strategy=strategy, generation=gen + 1))
 
+                # Reset survivors fully so they start the next generation with a clean slate
                 for s in survivors:
                     s.resources = self.initial_endowment
                     s.regret_memories.clear()
@@ -582,7 +663,7 @@ class PrisonersDilemmaBase:
                     s.gossip_to_share.clear()
                     s.interaction_history.clear()
                     s.history.clear()
-                    s.actions.clear()  # Clear chronological actions for new generation
+                    s.actions.clear()
                     s.traces.clear()
                     s.forgiveness_records.clear()
                     s.reputation_beliefs.clear()
@@ -592,6 +673,7 @@ class PrisonersDilemmaBase:
                 agents = survivors + new_agents
                 random.shuffle(agents)
 
+        # Save the full results to a timestamped JSON file in the latest_results folder
         os.makedirs("latest_results", exist_ok=True)
         timestamp = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
         filename = f"latest_results/claude_pd_{mech_name}_{timestamp}.json"
@@ -601,3 +683,4 @@ class PrisonersDilemmaBase:
 
         print(f"\n{'=' * 60}\n✓ Simulation complete!\n✓ Results saved to: {filename}\n{'=' * 60}")
         return filename
+
